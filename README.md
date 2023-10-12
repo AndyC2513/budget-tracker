@@ -3,8 +3,8 @@
 ## CPSC 210 Project by Andy Chen
 
 Like many other people, I find managing and budgeting my spending each month to be extremely important but a tedious
-task. Online digital payments popularized online subscription services of different platforms. On top of that, there
-are payments on everyday necessities. This is why my project will be an application to **record budgets and personal
+task. Online digital payments popularized online subscription services of different platforms. This is why my project
+will be an application to **record budgets and personal
 finances.** Enter type of finance, budget for each type of finance, amount of available funds for each *type of
 finance*. Under each type of finance, there are different type of spending projects. Possible features are
 *subscription
@@ -13,28 +13,22 @@ each month. In
 addition, another feature could be a *budget alert* where once the available funds drop below a certain threshold, the
 user will be reminded of their budget.
 
-**Possible X Classes (Payment Projects):**
+**Possible X Classes (Subscription):**
 
 - Netflix Subscription
 - YouTube Premium Subscription
 - Spotify Premium Subscription
-- Rent
 - Vehicle Finance
-- Amazon Purchases
+- Amazon Prime Subscription
 
-**Possible Y Classes (Payment Types):**
+**Possible Y Classes (Subscriptions):**
 
-- WeChat Wallet
-- Debit Card
-- Credit Card
-- Cash
-- PayPal
+- List of Subscriptions
 
 ## User Stories
 
-- As a user, I want to be able to add a payment project to my payment type
-- As a user, I want to be able to view the list of payment projects in each of my payment type
-- As a user, I want to be able to mark a payment project as *paid*
-- As a user, I want to be able to remove a payment project from my payment type
-- As a user, I want to be able to see statistics on how much fund is available , and how much fund is spent on
-  each project
+- As a user, I want to be able to add a subscription to my subscriptions
+- As a user, I want to be able to view the list of subscription in each of my subscriptions
+- As a user, I want to be able to mark a subscription as *paid*
+- As a user, I want to be able to remove a subscription from my subscriptions
+- As a user, I want to be able to see statistics on how much fund is available , and how much fund is spent on I have left
