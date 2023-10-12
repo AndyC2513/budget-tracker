@@ -24,4 +24,5 @@ public class Subscription {
     public boolean isPaid() {
         return this.paid;
     }
+
 }

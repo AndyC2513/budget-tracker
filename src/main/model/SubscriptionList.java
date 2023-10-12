@@ -3,12 +3,14 @@ package model;
 import java.util.ArrayList;
 
 // Represents a list of Subscriptions and commands that can be done to the subscriptions in the list
-public class Subscriptions {
+public class SubscriptionList {
+    private String name;
     private ArrayList<Subscription> listofSubs;
 
     // Creates a new ArrayList in the constructor
-    public Subscriptions() {
+    public SubscriptionList() {
         listofSubs = new ArrayList<>();
+        name = "";
     }
 
     // MODIFIES: this
@@ -37,9 +39,18 @@ public class Subscriptions {
         return listofSubs.size();
     }
 
+    // EFFECTS: returns the list of subs
+    public ArrayList<Subscription> getListofSubs() {
+        return this.listofSubs;
+    }
+
     // EFFECTS: list all the subscriptions and their name, price and payment status
     public String getSubList() {
-        return null; // stub
+        String retString = "";
+        for (Subscription s : listofSubs) {
+            retString = s.getName() + "\t" + s.getPrice() + "\t" + s.isPaid() + "\n";
+        }
+        return retString;
     }
 
 }
