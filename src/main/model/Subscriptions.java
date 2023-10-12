@@ -32,7 +32,7 @@ public class Subscriptions {
         }
     }
 
-    // EFFECTS: returns the size of the Subscription list
+    // EFFECTS: returns the size of the Subscriptions list
     public int getNumSubs() {
         return listofSubs.size();
     }
