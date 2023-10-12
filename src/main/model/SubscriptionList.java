@@ -14,14 +14,9 @@ public class SubscriptionList {
     }
 
     // MODIFIES: this
-    // EFFECTS: returns true and adds a Subscription to the list, else return false
-    public boolean addSub(Subscription sub) {
-        if (listofSubs.contains(sub)) {
-            return false;
-        } else {
-            listofSubs.add(sub);
-            return true;
-        }
+    // EFFECTS: adds a Subscription to the list
+    public void addSub(Subscription sub) {
+        listofSubs.add(sub);
     }
 
     // EFFECTS: returns true and removes subscription if it is in the list

@@ -3,7 +3,6 @@ package ui;
 import model.Subscription;
 import model.SubscriptionList;
 
-import javax.naming.AuthenticationNotSupportedException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -39,47 +38,56 @@ public class BudgetApp {
         System.out.println("\nGoodbye!");
     }
 
+    // EFFECT: processes user command
     private void processCommand(String command) {
+        int index = -1;
         switch (command) {
             case "e":
-                SubscriptionList list = displayList(0);
-                if (subList.get(0).getNumSubs() == 0) {
-                    System.out.println("No subscriptions yet!");
-                    break;
-                }
-                command = input.next();
-                modifyWhich(command, list);
+                index = 0;
                 break;
             case "l":
-                SubscriptionList list1 = displayList(1);
-                if (subList.get(1).getNumSubs() == 0) {
-                    System.out.println("No subscriptions yet!");
-                    break;
-                }
-                command = input.next();
-                modifyWhich(command, list1);
+                index = 1;
                 break;
             case "a":
-                SubscriptionList list2 = displayList(2);
-                if (subList.get(2).getNumSubs() == 0) {
-                    System.out.println("No subscriptions yet!");
-                    break;
-                }
-                command = input.next();
-                modifyWhich(command, list2);
+                index = 2;
                 break;
+        }
+        if (index != -1) {
+            SubscriptionList list = displayList(index);
+            if (subList.get(index).getNumSubs() == 0) {
+                System.out.println("No subscriptions yet!");
+                System.out.println("Want to add Subscription?");
+                SubscriptionList newSubList = addSubList();
+                return;
+            }
+            command = input.next();
+            modifyWhich(command, list);
         }
     }
 
-    private boolean isEmptySub() {
-        return subList.get(0).getNumSubs() == 0;
+    private SubscriptionList addSubList() {
+        String selection = "";
+
+        while (!(selection.equals("y") || selection.equals("n"))) {
+            System.out.println("y for yes");
+            System.out.println("n for no");
+            selection = input.next();
+            selection = selection.toLowerCase();
+        }
+
+        if (selection.equals("y")) {
+            return null;
+        } else {
+            return null;
+        }
     }
 
+    // EFFECT: turn command (string) into int, then access given index
     private void modifyWhich(String command, SubscriptionList list) {
-        // turn command into string, then access given index
         int i = Integer.parseInt(command);
         Subscription sub = list.getListofSubs().get(i);
-        System.out.println(String.valueOf(sub.getPrice()) + " 8=====D " + sub.getName());
+        System.out.println(sub.getName() + "\n" + "$" + String.valueOf(sub.getPrice())
+                + "\n" + String.valueOf(sub.isPaid()));
     }
 
     // MODIFIES: this
@@ -90,10 +98,6 @@ public class BudgetApp {
         SubscriptionList livList = new SubscriptionList();
         SubscriptionList acList = new SubscriptionList();
         entList.addSub(new Subscription("tony1", 699999.89));
-        entList.addSub(new Subscription("tony", 69));
-        entList.addSub(new Subscription("tony", 69));
-        entList.addSub(new Subscription("tony", 69));
-        entList.addSub(new Subscription("tony", 69));
         subList.add(entList);
         subList.add(livList);
         subList.add(acList);
@@ -110,7 +114,7 @@ public class BudgetApp {
         System.out.println("\tq -> quit");
     }
 
-    // EFFECTS: displays given list to user
+    // EFFECTS: display the subscription list at index i
     private SubscriptionList displayList(int i) {
         SubscriptionList list = this.subList.get(i);
         int j = 0;
