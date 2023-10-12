@@ -6,11 +6,14 @@ import java.util.ArrayList;
 public class SubscriptionList {
     private String name;
     private ArrayList<Subscription> listofSubs;
+    private int budget;
 
-    // Creates a new ArrayList in the constructor
+    // Creates a new ArrayList in the constructor with name and initial budget
     public SubscriptionList() {
         listofSubs = new ArrayList<>();
         name = "";
+        budget = 1000;
+
     }
 
     // MODIFIES: this

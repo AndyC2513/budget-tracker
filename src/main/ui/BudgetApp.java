@@ -35,7 +35,7 @@ public class BudgetApp {
             }
         }
 
-        System.out.println("\nGoodbye!");
+        System.out.println("\nExiting Program...");
     }
 
     // EFFECT: processes user command
@@ -57,7 +57,7 @@ public class BudgetApp {
             if (subList.get(index).getNumSubs() == 0) {
                 System.out.println("No subscriptions yet!");
                 System.out.println("Want to add Subscription?");
-                SubscriptionList newSubList = addSubList();
+                addSubList(list);
                 return;
             }
             command = input.next();
@@ -65,7 +65,7 @@ public class BudgetApp {
         }
     }
 
-    private SubscriptionList addSubList() {
+    private SubscriptionList addSubList(SubscriptionList list) {
         String selection = "";
 
         while (!(selection.equals("y") || selection.equals("n"))) {
@@ -75,8 +75,16 @@ public class BudgetApp {
             selection = selection.toLowerCase();
         }
 
+        Scanner info = new Scanner(System.in);
         if (selection.equals("y")) {
-            return null;
+            System.out.println("Enter Subscription name:");
+            String name = info.nextLine();
+
+            System.out.println("Enter Subscription price:");
+            int price = info.nextInt();
+            Subscription newSub =  new Subscription(name, price);
+            list.addSub(newSub);
+            return list;
         } else {
             return null;
         }
@@ -88,6 +96,9 @@ public class BudgetApp {
         Subscription sub = list.getListofSubs().get(i);
         System.out.println(sub.getName() + "\n" + "$" + String.valueOf(sub.getPrice())
                 + "\n" + String.valueOf(sub.isPaid()));
+        if (!sub.isPaid()) {
+            System.out.println("Want to pay for subscription?");
+        }
     }
 
     // MODIFIES: this
@@ -97,7 +108,7 @@ public class BudgetApp {
         SubscriptionList entList = new SubscriptionList();
         SubscriptionList livList = new SubscriptionList();
         SubscriptionList acList = new SubscriptionList();
-        entList.addSub(new Subscription("tony1", 699999.89));
+        entList.addSub(new Subscription("Tony", 699999.89));
         subList.add(entList);
         subList.add(livList);
         subList.add(acList);
