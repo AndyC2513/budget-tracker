@@ -105,7 +105,7 @@ public class BudgetApp {
         input.useDelimiter("\n");
     }
 
-    // EFFECTS: displays menu of options to user
+    // EFFECTS: displays the menu of options to user
     private void displayMenu() {
         System.out.println("\nSelect from:");
         System.out.println("\te -> entertainment list");
