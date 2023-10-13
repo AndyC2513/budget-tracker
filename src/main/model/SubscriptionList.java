@@ -4,14 +4,12 @@ import java.util.ArrayList;
 
 // Represents a list of Subscriptions and commands that can be done to the subscriptions in the list
 public class SubscriptionList {
-    private String name;
     private ArrayList<Subscription> listofSubs;
-    private int budget;
+    protected double budget;
 
-    // Creates a new ArrayList in the constructor with name and initial budget
+    // Creates a new ArrayList in the constructor initial budget
     public SubscriptionList() {
         listofSubs = new ArrayList<>();
-        name = "";
         budget = 1000;
 
     }
@@ -23,13 +21,24 @@ public class SubscriptionList {
     }
 
     // EFFECTS: returns true and removes subscription if it is in the list
-    public boolean removeSub(Subscription sub) {
+    public void removeSub(Subscription sub) {
+        listofSubs.remove(sub);
+    }
+
+    // MODIFIES: sub, this
+    // EFFECTS: subtracts the subscription amount from budget, sets payment status to true, and sets apparent price to 0
+    public void payForSub(Subscription sub) {
         if (listofSubs.contains(sub)) {
-            listofSubs.remove(sub);
-            return true;
-        } else {
-            return false;
+            budget = budget - sub.getPrice();
+            sub.paid = true;
+            sub.apparentPrice = 0;
         }
+    }
+
+    // MODIFIES: this
+    // EFFECTS: adds more budget to this list
+    public void addBudget(double amount) {
+        budget = budget + amount;
     }
 
     // EFFECTS: returns the size of the Subscriptions list
@@ -38,17 +47,12 @@ public class SubscriptionList {
     }
 
     // EFFECTS: returns the list of subs
-    public ArrayList<Subscription> getListofSubs() {
+    public ArrayList<Subscription> getListOfSubs() {
         return this.listofSubs;
     }
 
-    // EFFECTS: list all the subscriptions and their name, price and payment status
-    public String getSubList() {
-        String retString = "";
-        for (Subscription s : listofSubs) {
-            retString = s.getName() + "\t" + s.getPrice() + "\t" + s.isPaid() + "\n";
-        }
-        return retString;
+    // EFFECTS: returns the list's budget
+    public double getBudget() {
+        return budget;
     }
-
 }
