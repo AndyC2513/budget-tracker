@@ -90,7 +90,7 @@ public class BudgetApp {
         }
     }
 
-    // EFFECT: turn command (string) into int, then access given index
+    // EFFECT: turn command into int, then access given index
     private void modifyWhich(String command, SubscriptionList list) {
         int i = Integer.parseInt(command);
         Subscription sub = list.getListofSubs().get(i);
