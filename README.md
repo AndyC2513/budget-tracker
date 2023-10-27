@@ -29,5 +29,5 @@ either *pay* or *remove* each subscription or expense. In addition, the user can
 - As a user, I want to be able to mark a subscription as *paid*
 - As a user, I want to be able to remove a subscription from my subscriptions
 - As a user, I want to be able to see how much fund is available for each Subscription list
-- As a user, I want to be able to save my subscriptions and budgets to file (if I so choose)
-- As a user, I want to be able to be able to load my subscriptions and budgets from file (if I so choose)
+- As a user, I want to be able to save my subscriptions and budgets to file (if I choose to)
+- As a user, I want to be able to be able to load my subscriptions and budgets from file (if I choose to)
