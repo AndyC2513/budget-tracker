@@ -11,7 +11,7 @@ public class SubscriptionTest {
 
     @BeforeEach
     void runBefore() {
-        testSub = new Subscription("Netflix", 28.99);
+        testSub = new Subscription("Netflix", 28.99, 28.99, false);
     }
 
     @Test

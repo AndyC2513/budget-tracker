@@ -2,14 +2,21 @@ package ui;
 
 import model.Subscription;
 import model.SubscriptionList;
+import persistence.JsonReader;
+import persistence.JsonWriter;
 
-import java.util.ArrayList;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.Objects;
 import java.util.Scanner;
 
 // Subscription budget application
 public class BudgetApp {
-    private ArrayList<SubscriptionList> subList;
+    private static final String JSON_STORE = "./data/sublist.json";
+    private SubscriptionList subList;
     private Scanner input;
+    private JsonWriter jsonWriter;
+    private JsonReader jsonReader;
 
     //EFFECTS: runs the budget application
     public BudgetApp() {
@@ -39,208 +46,396 @@ public class BudgetApp {
     }
 
     // MODIFIES: this
-    // EFFECT: processes user command and enters a subscription list of user's choosing
-    private void processCommand(String command) {
-        int index = -1;
-        switch (command) {
-            case "e":
-                index = 0;
-                break;
-            case "l":
-                index = 1;
-                break;
-            case "a":
-                index = 2;
-                break;
-        }
-        if (index != -1) {
-            SubscriptionList list = displayList(index);
-            if (subList.get(index).getNumSubs() == 0) {
-                System.out.println("\tNo subscriptions yet!");
-                System.out.println("\tWant to add a Subscription?");
-                addSubList(list);
-                return;
-            }
-            command = input.next();
-            modifyWhich(command, list);
-        }
-    }
-
-    // MODIFIES: this
-    // EFFECTS: asks user if they want to add a new subscription, or return to menu,
-    // constructs a subscription from user input and adds it to list in the case where the list is empty
-    private void addSubList(SubscriptionList list) {
-        String selection = "";
-
-        while (!(selection.equals("y") || selection.equals("n") || selection.equals("o"))) {
-            System.out.println("\ty for yes");
-            System.out.println("\tn for no");
-            System.out.println("\to to return to menu");
-            selection = input.next();
-            selection = selection.toLowerCase();
-        }
-
-        Scanner info = new Scanner(System.in);
-        if (selection.equals("y")) {
-            System.out.println("\tEnter Subscription name:");
-            String name = info.nextLine();
-
-            System.out.println("\tEnter Subscription price:");
-            int price = info.nextInt();
-            Subscription newSub =  new Subscription(name, price);
-            list.addSub(newSub);
-            System.out.println("\tNew Subscription added, remember to pay!");
-        }
-    }
-
-    // EFFECT: turn command into int, then access given index
-    private void modifyWhich(String command, SubscriptionList list) {
-        int i = Integer.parseInt(command);
-        Subscription sub = list.getListOfSubs().get(i);
-        displaySubscription(list, sub);
-    }
-
-    // MODIFIES: this
-    // EFFECTS: asks user if they want to add a new subscription, constructs a subscription
-    // from user input and adds it to list in the case where the list is NOT empty
-    private void askIfAddSub(SubscriptionList list) {
-        System.out.println("\tWant to add a Subscription?");
-        String selection = "";
-
-        while (!(selection.equals("y") || selection.equals("n"))) {
-            System.out.println("\ty for yes");
-            System.out.println("\tn for no");
-            selection = input.next();
-            selection = selection.toLowerCase();
-        }
-
-        Scanner info = new Scanner(System.in);
-        if (selection.equals("y")) {
-            System.out.println("\tEnter Subscription name:");
-            String name = info.nextLine();
-
-            System.out.println("\tEnter Subscription price:");
-            int price = info.nextInt();
-            Subscription newSub =  new Subscription(name, price);
-            list.addSub(newSub);
-            System.out.println("\tNew Subscription added, remember to pay!");
-        }
-    }
-
-    // EFFECTS: displays the chosen subscription and provides user with some helpful interactions
-    private void displaySubscription(SubscriptionList list, Subscription sub) {
-        System.out.println("\tSubscription name: " + sub.getName() + "\n" + "\tSubscription price: " + "$"
-                + (sub.getPrice()));
-        subControl(list, sub);
-    }
-
-    // MODIFIES: this
-    // EFFECTS: asks if the user wants to return to menu, remove, or pay for this subscription
-    @SuppressWarnings("methodlength")
-    private void subControl(SubscriptionList list, Subscription sub) {
-        if (!sub.isPaid()) {
-            System.out.println("\tSubscription is NOT paid!");
-            System.out.println("\tr to remove");
-            System.out.println("\tp to pay with budget");
-            System.out.println("\to to return to menu");
-
-            String choice = input.next().toLowerCase();
-
-            while (!(choice.equals("r") || choice.equals("p") || choice.equals("o"))) {
-                System.out.println("\tr to remove");
-                System.out.println("\tp to pay with budget");
-                System.out.println("\to to return to menu");
-                choice = input.next();
-                choice = choice.toLowerCase();
-            }
-
-            switch (choice) {
-                case "r":
-                    list.removeSub(sub);
-                    System.out.println("\tSubscription removed!");
-                    break;
-                case "p":
-                    if (list.getBudget() >= sub.getPrice()) {
-                        list.payForSub(sub);
-                        System.out.println("\tSubscription paid!");
-                    } else if (list.getBudget() < sub.getPrice()) {
-                        System.out.println("\tNot enough money in budget");
-                    }
-            }
-        } else {
-            System.out.println("\tSubscription is PAID");
-        }
-    }
-
-    // MODIFIES: this
-    // EFFECTS: initializes a subscription list with entList having an entry
+    // EFFECTS: initializes a list of subscription list for user to choose from
     private void init() {
-        subList = new ArrayList<>();
-        SubscriptionList entList = new SubscriptionList();
-        SubscriptionList livList = new SubscriptionList();
-        SubscriptionList acList = new SubscriptionList();
-        entList.addSub(new Subscription("Netflix", 18.99));
-        subList.add(entList);
-        subList.add(livList);
-        subList.add(acList);
         input = new Scanner(System.in);
         input.useDelimiter("\n");
+        subList = new SubscriptionList(0, 0, 0);
+        jsonWriter = new JsonWriter(JSON_STORE);
+        jsonReader = new JsonReader(JSON_STORE);
     }
 
     // EFFECTS: displays the menu of options to user
     private void displayMenu() {
         System.out.println("\nSelect from:");
-        System.out.println("\te -> entertainment list");
-        System.out.println("\tl -> living expenses");
-        System.out.println("\ta -> academic expenses");
+        System.out.println("\ta -> add a subscription");
+        System.out.println("\tr -> remove a subscription");
+        System.out.println("\tp -> pay for a subscription");
+        System.out.println("\tv -> view subscriptions");
+        System.out.println("\tf -> add more budget");
+        System.out.println("\ts -> save subscriptions to file");
+        System.out.println("\tl -> load subscriptions from file");
         System.out.println("\tq -> quit");
     }
 
-    // EFFECTS: display the subscription list at index i
-    private SubscriptionList displayList(int i) {
-        SubscriptionList list = this.subList.get(i);
-        askIfAddSub(list);
-        askIfAddFund(list);
-        int j = 0;
-        for (Subscription s : list.getListOfSubs()) {
-            System.out.println("\t" + (j) + " -> " + s.getName()
-                    + "\n" + "\tAmount to pay: " + "$" + s.getApparentPrice());
-            j++;
+    // MODIFIES: this
+    // EFFECT: processes user command and enters a subscription list of user's choosing
+    private void processCommand(String command) {
+
+        if (Objects.equals(command, "a")) {
+            showAdd();
+        } else if (Objects.equals(command, "r")) {
+            showRemove();
+        } else if (Objects.equals(command, "p")) {
+            showPay();
+        } else if (Objects.equals(command, "v")) {
+            showView();
+        } else if (Objects.equals(command, "f")) {
+            showFund();
+        } else if (Objects.equals(command, "s")) {
+            saveSubList();
+        } else if (Objects.equals(command, "l")) {
+            loadSubList();
+        } else {
+            System.out.println("Selection not valid...");
         }
-        SubscriptionList paid = new SubscriptionList();
-        for (Subscription s : list.getListOfSubs()) {
-            if (!(s.isPaid())) {
-                paid.addSub(s);
-            }
+    }
+
+    // EFFECTS: saves the current subscription lists to file
+    private void saveSubList() {
+        try {
+            jsonWriter.open();
+            jsonWriter.write(subList);
+            jsonWriter.close();
+            System.out.println("Subscriptions Saved to " + JSON_STORE);
+        } catch (FileNotFoundException e) {
+            System.out.println("Unable to write to file: " + JSON_STORE);
         }
-        double n = 0;
-        for (Subscription s : paid.getListOfSubs()) {
-            n = n + s.getApparentPrice();
+    }
+
+    // EFFECTS: loads subscriptions from file
+    private void loadSubList() {
+        try {
+            subList = jsonReader.read();
+            System.out.println("Loaded subscriptions from " + JSON_STORE);
+        } catch (IOException e) {
+            System.out.println("Unable to read from file: " + JSON_STORE);
         }
-        System.out.println("\n" + "\tTotal amount to pay: " + "$" + n);
-        System.out.println("\tBudget: " + "$" + list.getBudget());
-        return list;
+    }
+
+    // EFFECTS: asks user for name and price to construct a new Subscription
+    private void showAdd() {
+        System.out.println("\nPlease enter subscription name");
+        String name = input.next();
+        System.out.println("\nPlease enter subscription price");
+        double price = input.nextDouble();
+        Subscription sub = new Subscription(name, price, price, false);
+        askAdd(sub);
     }
 
     // MODIFIES: this
-    // EFFECTS: increases budget if user wishes to, by the amount given by the user
-    private void askIfAddFund(SubscriptionList list) {
-        System.out.println("\tWant to add more funds to this list?");
-        String selection = "";
+    // EFFECTS: adds the constructed subscription to the category of user's choosing
+    private void askAdd(Subscription sub) {
+        System.out.println("\nWhich category is this subscription?");
+        System.out.println("\te <- entertainment");
+        System.out.println("\tl <- living expense");
+        System.out.println("\ta <- academic expense");
+        String choice = input.next();
+        if (Objects.equals(choice,"e")) {
+            subList.addEntSub(sub);
+            System.out.println("Subscription added, remember to pay!");
+        } else if (Objects.equals(choice, "l")) {
+            subList.addLivSub(sub);
+            System.out.println("Subscription added, remember to pay!");
+        } else if (Objects.equals(choice, "a")) {
+            subList.addAcSub(sub);
+            System.out.println("Subscription added, remember to pay!");
+        } else {
+            System.out.println("Invalid choice");
+        }
+    }
 
-        while (!(selection.equals("y") || selection.equals("n"))) {
-            System.out.println("\ty for yes");
-            System.out.println("\tn for no");
-            selection = input.next();
-            selection = selection.toLowerCase();
+    // EFFECTS: asks user which category they want to remove a subscription from
+    private void showRemove() {
+        System.out.println("\nWhich category do you want to remove from?");
+        System.out.println("\te <- entertainment");
+        System.out.println("\tl <- living expense");
+        System.out.println("\ta <- academic expense");
+        String choice = input.next();
+        if (Objects.equals(choice,"e")) {
+            showRemoveEnt();
+        } else if (Objects.equals(choice, "l")) {
+            showRemoveLiv();
+        } else if (Objects.equals(choice, "a")) {
+            showRemoveAc();
+        } else {
+            System.out.println("Invalid choice");
+        }
+    }
+
+    // MODIFIES: this
+    // EFFECTS: asks user to choose a subscription from entertainment to remove
+    private void showRemoveEnt() {
+        if (subList.getNumEntSubs() == 0) {
+            System.out.println("\nThere are no subscriptions in this category!");
+        } else {
+            int j = 0;
+            for (Subscription s : subList.getListOfEntSubs()) {
+                System.out.println("\t" + (j) + " -> " + s.getName()
+                        + "\n" + "\tAmount to pay: " + "$" + s.getApparentPrice()
+                        + "\n" + "\tBudget available: " + "$" + subList.getEntBudget());
+                j++;
+            }
+            System.out.println("\nEnter the associated integer to remove the attached subscription");
+            int choice = input.nextInt();
+            Subscription sub = subList.getListOfEntSubs().get(choice);
+            subList.removeEntSub(sub);
+            System.out.println("\nSuccessfully removed");
+        }
+    }
+
+    // MODIFIES: this
+    // EFFECTS: asks user to choose a subscription from living to remove
+    private void showRemoveLiv() {
+        if (subList.getNumLivSubs() == 0) {
+            System.out.println("\nThere are no subscriptions in this category!");
+        } else {
+            int j = 0;
+            for (Subscription s : subList.getListOfLivSubs()) {
+                System.out.println("\t" + (j) + " -> " + s.getName()
+                        + "\n" + "\tAmount to pay: " + "$" + s.getApparentPrice()
+                        + "\n" + "\tBudget available: " + "$" + subList.getLivBudget());
+                j++;
+            }
+            System.out.println("\nEnter the associated integer to remove the attached subscription");
+            int choice = input.nextInt();
+            Subscription sub = subList.getListOfLivSubs().get(choice);
+            subList.removeLivSub(sub);
+            System.out.println("\nSuccessfully removed");
+        }
+    }
+
+    // MODIFIES: this
+    // EFFECTS: asks user to choose a subscription from academic to remove
+    private void showRemoveAc() {
+        if (subList.getNumAcSubs() == 0) {
+            System.out.println("\nThere are no subscriptions in this category!");
+        } else {
+            int j = 0;
+            for (Subscription s : subList.getListOfAcSubs()) {
+                System.out.println("\t" + (j) + " -> " + s.getName()
+                        + "\n" + "\tAmount to pay: " + "$" + s.getApparentPrice()
+                        + "\n" + "\tBudget available: " + "$" + subList.getAcBudget());
+                j++;
+            }
+            System.out.println("\nEnter the associated integer to remove the attached subscription");
+            int choice = input.nextInt();
+            Subscription sub = subList.getListOfAcSubs().get(choice);
+            subList.removeAcSub(sub);
+            System.out.println("\nSuccessfully removed");
+        }
+    }
+
+    // EFFECTS: asks user to choose a category to pay for a subscription in that category
+    private void showPay() {
+        System.out.println("\nWhich category do you want to pay for?");
+        System.out.println("\te <- entertainment");
+        System.out.println("\tl <- living expense");
+        System.out.println("\ta <- academic expense");
+        String choice = input.next();
+        if (Objects.equals(choice,"e")) {
+            showPayEnt();
+        } else if (Objects.equals(choice, "l")) {
+            showPayLiv();
+        } else if (Objects.equals(choice, "a")) {
+            showPayAc();
+        } else {
+            System.out.println("Invalid choice");
+        }
+    }
+
+    // MODIFIES: this
+    // EFFECTS: asks user to pay for a subscription in their chosen category
+    private void showPayEnt() {
+        if (subList.getNumEntSubs() == 0) {
+            System.out.println("\nThere are no subscriptions in this category!");
+        } else {
+            int j = 0;
+            for (Subscription s : subList.getListOfEntSubs()) {
+                System.out.println("\t" + (j) + " -> " + s.getName()
+                        + "\n" + "\tAmount to pay: " + "$" + s.getApparentPrice()
+                        + "\n" + "\tBudget available: " + "$" + subList.getEntBudget());
+                j++;
+            }
+            System.out.println("\nEnter the associated integer to pay the attached subscription");
+            int choice = input.nextInt();
+            Subscription sub = subList.getListOfEntSubs().get(choice);
+            subList.payForEntSub(sub);
         }
 
-        Scanner info = new Scanner(System.in);
-        if (selection.equals("y")) {
-            System.out.println("\tEnter amount of funds:");
-            double amount = info.nextInt();
-            list.addBudget(amount);
-            System.out.println("\tNew funds added!");
+    }
+
+    // MODIFIES: this
+    // EFFECTS: asks user to pay for a subscription in their chosen category
+    private void showPayLiv() {
+        if (subList.getNumLivSubs() == 0) {
+            System.out.println("\nThere are no subscriptions in this category!");
+        } else {
+            int j = 0;
+            for (Subscription s : subList.getListOfLivSubs()) {
+                System.out.println("\t" + (j) + " -> " + s.getName()
+                        + "\n" + "\tAmount to pay: " + "$" + s.getApparentPrice()
+                        + "\n" + "\tBudget available: " + "$" + subList.getLivBudget());
+                j++;
+            }
+            System.out.println("\nEnter the associated integer to pay the attached subscription");
+            int choice = input.nextInt();
+            Subscription sub = subList.getListOfLivSubs().get(choice);
+            subList.payForLivSub(sub);
+        }
+    }
+
+    // MODIFIES: this
+    // EFFECTS: asks user to pay for a subscription in their chosen category
+    private void showPayAc() {
+        if (subList.getNumAcSubs() == 0) {
+            System.out.println("\nThere are no subscriptions in this category!");
+        } else {
+            int j = 0;
+            for (Subscription s : subList.getListOfAcSubs()) {
+                System.out.println("\t" + (j) + " -> " + s.getName()
+                        + "\n" + "\tAmount to pay: " + "$" + s.getApparentPrice()
+                        + "\n" + "\tBudget available: " + "$" + subList.getAcBudget());
+                j++;
+            }
+            System.out.println("\nEnter the associated integer to pay the attached subscription");
+            int choice = input.nextInt();
+            Subscription sub = subList.getListOfAcSubs().get(choice);
+            subList.payForAcSub(sub);
+        }
+    }
+
+    // EFFECTS: asks user to choose a category to view
+    private void showView() {
+        System.out.println("\nWhich category do you want to view?");
+        System.out.println("\te <- entertainment");
+        System.out.println("\tl <- living expense");
+        System.out.println("\ta <- academic expense");
+        System.out.println("\tv <- view all");
+        String choice = input.next();
+        if (Objects.equals(choice,"e")) {
+            showEnt();
+        } else if (Objects.equals(choice, "l")) {
+            showLiv();
+        } else if (Objects.equals(choice, "a")) {
+            showAc();
+        } else if (Objects.equals((choice), "v")) {
+            showEnt();
+            showLiv();
+            showAc();
+        } else {
+            System.out.println("Invalid choice");
+        }
+    }
+
+    // EFFECTS: shows user their chosen category and the associated subscriptions
+    private void showEnt() {
+        if (subList.getNumEntSubs() == 0) {
+            System.out.println("\nEntertainment" + "\nThere are no subscriptions in this category!"
+                    + "\n" + "\tBudget available: " + "$" + subList.getEntBudget());
+        } else {
+            int j = 0;
+            for (Subscription s : subList.getListOfEntSubs()) {
+                System.out.println("\nEntertainment\n" + "\t" + (j) + " -> " + s.getName()
+                        + "\n" + "\tAmount to pay: " + "$" + s.getApparentPrice()
+                        + "\n" + "\tBudget available: " + "$" + subList.getEntBudget());
+                j++;
+            }
+        }
+    }
+
+    // EFFECTS: shows user their chosen category and the associated subscriptions
+    private void showLiv() {
+        if (subList.getNumLivSubs() == 0) {
+            System.out.println("\nLiving Expense" + "\nThere are no subscriptions in this category!"
+                    + "\n" + "\tBudget available: " + "$" + subList.getLivBudget());
+        } else {
+            int j = 0;
+            for (Subscription s : subList.getListOfLivSubs()) {
+                System.out.println("\nLiving Expense\n" + "\t" + (j) + " -> " + s.getName()
+                        + "\n" + "\tAmount to pay: " + "$" + s.getApparentPrice()
+                        + "\n" + "\tBudget available: " + "$" + subList.getLivBudget());
+                j++;
+            }
+        }
+    }
+
+    // EFFECTS: shows user their chosen category and the associated subscriptions
+    private void showAc() {
+        if (subList.getNumAcSubs() == 0) {
+            System.out.println("\nAcademic Expense" + "\nThere are no subscriptions in this category!"
+                    + "\n" + "\tBudget available: " + "$" + subList.getAcBudget());
+        } else {
+            int j = 0;
+            for (Subscription s : subList.getListOfAcSubs()) {
+                System.out.println("\nAcademic Expense\n" + "\t" + (j) + " -> " + s.getName()
+                        + "\n" + "\tAmount to pay: " + "$" + s.getApparentPrice()
+                        + "\n" + "\tBudget available: " + "$" + subList.getAcBudget());
+                j++;
+            }
+        }
+    }
+
+    // EFFECTS: asks user to choose a category to add funds to
+    private void showFund() {
+        System.out.println("\nWhich category do you want to add funds to?");
+        System.out.println("\te <- entertainment");
+        System.out.println("\tl <- living expense");
+        System.out.println("\ta <- academic expense");
+        String choice = input.next();
+        if (Objects.equals(choice,"e")) {
+            showEntFunds();
+        } else if (Objects.equals(choice, "l")) {
+            showLivFunds();
+        } else if (Objects.equals(choice, "a")) {
+            showAcFunds();
+        } else {
+            System.out.println("Invalid choice");
+        }
+    }
+
+    // MODIFIES: this
+    // EFFECTS: asks user for amount of funds and adds it to the entertainment category
+    private void showEntFunds() {
+        System.out.println("\nPlease enter the amount of funding you wish to add");
+        double fund = input.nextDouble();
+        subList.addEntBudget(fund);
+        System.out.println("\nFund Added!");
+        System.out.println("\nYou now have a budget of " + "$" + subList.getEntBudget() + " for this category");
+        if (subList.getNumEntSubs() == 0) {
+            System.out.println("\nThere are no subscriptions in this category!");
+        } else {
+            System.out.println("\nRemember to pay for subscriptions!");
+        }
+    }
+
+    // MODIFIES: this
+    // EFFECTS: asks user for amount of funds and adds it to the living expense category
+    private void showLivFunds() {
+        System.out.println("\nPlease enter the amount of funding you wish to add");
+        double fund = input.nextDouble();
+        subList.addLivBudget(fund);
+        System.out.println("\nFund Added!");
+        System.out.println("\nYou now have a budget of " + "$" + subList.getLivBudget() + " for this category");
+        if (subList.getNumLivSubs() == 0) {
+            System.out.println("\nThere are no subscriptions in this category!");
+        } else {
+            System.out.println("\nRemember to pay for subscriptions!");
+        }
+    }
+
+    // MODIFIES: this
+    // EFFECTS: asks user for amount of funds and adds it to the academic category
+    private void showAcFunds() {
+        System.out.println("\nPlease enter the amount of funding you wish to add");
+        double fund = input.nextDouble();
+        subList.addAcBudget(fund);
+        System.out.println("\nFund Added!");
+        System.out.println("\nYou now have a budget of " + "$" + subList.getAcBudget() + " for this category");
+        if (subList.getNumAcSubs() == 0) {
+            System.out.println("\nThere are no subscriptions in this category!");
+        } else {
+            System.out.println("\nRemember to pay for subscriptions!");
         }
     }
 }

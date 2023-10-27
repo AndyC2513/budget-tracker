@@ -1,0 +1,23 @@
+{
+  "entBudget": 500,
+  "living": [{
+    "price": 1237.99,
+    "name": "Rent",
+    "paid": false,
+    "apparent": 1237.99
+  }],
+  "entertainment": [{
+    "price": 28.99,
+    "name": "Netflix",
+    "paid": false,
+    "apparent": 28.99
+  }],
+  "academic": [{
+    "price": 22,
+    "name": "Textbook",
+    "paid": false,
+    "apparent": 22
+  }],
+  "livBudget": 10000,
+  "acBudget": 500
+}
