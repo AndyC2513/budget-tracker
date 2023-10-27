@@ -260,7 +260,11 @@ public class BudgetApp {
             System.out.println("\nEnter the associated integer to pay the attached subscription");
             int choice = input.nextInt();
             Subscription sub = subList.getListOfEntSubs().get(choice);
-            subList.payForEntSub(sub);
+            if (subList.payForEntSub(sub)) {
+                System.out.println("\nPayment successful!");
+            } else {
+                System.out.println("\nNot enough fund in budget!");
+            }
         }
 
     }
@@ -281,7 +285,11 @@ public class BudgetApp {
             System.out.println("\nEnter the associated integer to pay the attached subscription");
             int choice = input.nextInt();
             Subscription sub = subList.getListOfLivSubs().get(choice);
-            subList.payForLivSub(sub);
+            if (subList.payForLivSub(sub)) {
+                System.out.println("\nPayment successful!");
+            } else {
+                System.out.println("\nNot enough fund in budget!");
+            }
         }
     }
 
@@ -301,7 +309,11 @@ public class BudgetApp {
             System.out.println("\nEnter the associated integer to pay the attached subscription");
             int choice = input.nextInt();
             Subscription sub = subList.getListOfAcSubs().get(choice);
-            subList.payForAcSub(sub);
+            if (subList.payForAcSub(sub)) {
+                System.out.println("\nPayment successful!");
+            } else {
+                System.out.println("\nNot enough fund in budget!");
+            }
         }
     }
 

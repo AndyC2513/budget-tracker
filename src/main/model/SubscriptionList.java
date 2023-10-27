@@ -26,78 +26,90 @@ public class SubscriptionList implements Writable {
     }
 
     // MODIFIES: this
-    // EFFECTS: adds a Subscription to the appropriate list
+    // EFFECTS: adds a Subscription to the entertainment list
     public void addEntSub(Subscription sub) {
         entertainment.add(sub);
     }
 
+    // MODIFIES: this
+    // EFFECTS: adds a Subscription to the living expense list
     public void addLivSub(Subscription sub) {
         living.add(sub);
     }
 
+    // MODIFIES: this
+    // EFFECTS: adds a Subscription to the academic expense list
     public void addAcSub(Subscription sub) {
         academic.add(sub);
     }
 
 
-    // EFFECTS: removes subscription from appropriate list
+    // EFFECTS: removes subscription from entertainment list
     public void removeEntSub(Subscription sub) {
         entertainment.remove(sub);
     }
 
+    // EFFECTS: removes subscription from living expense list
     public void removeLivSub(Subscription sub) {
         living.remove(sub);
     }
 
+    // EFFECTS: removes subscription from academic expense list
     public void removeAcSub(Subscription sub) {
         academic.remove(sub);
     }
 
-    // MODIFIES: sub, this
+    // MODIFIES: this
     // EFFECTS: subtracts the subscription amount from budget, sets payment status to true, and sets apparent price to 0
     //          if not enough fund, inform the user of their lack of funds
-    public void payForEntSub(Subscription sub) {
+    public boolean payForEntSub(Subscription sub) {
         if (entertainment.contains(sub)) {
             if (entBudget >= sub.getPrice()) {
                 entBudget = entBudget - sub.getPrice();
                 sub.setPaid();
                 sub.setApparentPrice();
-                System.out.println("\nPayment successful!");
+                return true;
             } else {
-                System.out.println("\nNot enough fund in budget!");
+                return false;
             }
         } else {
-            System.out.println("\nSubscription doesn't exist in this category!");
+            return false;
         }
     }
 
-    public void payForLivSub(Subscription sub) {
+    // MODIFIES: this
+    // EFFECTS: subtracts the subscription amount from budget, sets payment status to true, and sets apparent price to 0
+    //          if not enough fund, inform the user of their lack of funds
+    public boolean payForLivSub(Subscription sub) {
         if (living.contains(sub)) {
             if (livBudget >= sub.getPrice()) {
                 livBudget = livBudget - sub.getPrice();
                 sub.setPaid();
                 sub.setApparentPrice();
-                System.out.println("\nPayment successful!");
+                return true;
             } else {
-                System.out.println("\nNot enough fund in budget!");
+                return false;
             }
         } else {
-            System.out.println("\nSubscription doesn't exist in this category!");
+            return false;
         }
     }
 
-    public void payForAcSub(Subscription sub) {
+    // MODIFIES: this
+    // EFFECTS: subtracts the subscription amount from budget, sets payment status to true, and sets apparent price to 0
+    //          if not enough fund, inform the user of their lack of funds
+    public boolean payForAcSub(Subscription sub) {
         if (academic.contains(sub)) {
             if (acBudget >= sub.getPrice()) {
                 acBudget = acBudget - sub.getPrice();
                 sub.setPaid();
                 sub.setApparentPrice();
-                System.out.println("\nPayment successful!");
+                return true;
             } else {
-                System.out.println("\nNot enough fund in budget!");
+                return false;
             }
         } else {
-            System.out.println("\nSubscription doesn't exist in this category!");
+            return false;
         }
     }
 
@@ -107,10 +119,14 @@ public class SubscriptionList implements Writable {
         entBudget = entBudget + amount;
     }
 
+    // MODIFIES: this
+    // EFFECTS: adds more budget to the appropriate list
     public void addLivBudget(double amount) {
         livBudget = livBudget + amount;
     }
 
+    // MODIFIES: this
+    // EFFECTS: adds more budget to the appropriate list
     public void addAcBudget(double amount) {
         acBudget = acBudget + amount;
     }
@@ -120,10 +136,12 @@ public class SubscriptionList implements Writable {
         return entertainment.size();
     }
 
+    // EFFECTS: returns the size of the appropriate Subscriptions list
     public int getNumLivSubs() {
         return living.size();
     }
 
+    // EFFECTS: returns the size of the appropriate Subscriptions list
     public int getNumAcSubs() {
         return academic.size();
     }
@@ -133,10 +151,12 @@ public class SubscriptionList implements Writable {
         return this.entertainment;
     }
 
+    // EFFECTS: returns the list of appropriate sub of each category
     public ArrayList<Subscription> getListOfLivSubs() {
         return this.living;
     }
 
+    // EFFECTS: returns the list of appropriate sub of each category
     public ArrayList<Subscription> getListOfAcSubs() {
         return this.academic;
     }
@@ -146,10 +166,12 @@ public class SubscriptionList implements Writable {
         return entBudget;
     }
 
+    // EFFECTS: returns the appropriate list's budget
     public double getLivBudget() {
         return livBudget;
     }
 
+    // EFFECTS: returns the appropriate list's budget
     public double getAcBudget() {
         return acBudget;
     }
