@@ -14,8 +14,8 @@ public class Subscription implements Writable {
     public Subscription(String name, double price, double apparentPrice, boolean paid) {
         this.name = name;
         this.price = price;
-        this.apparentPrice = price;
-        this.paid = false;
+        this.apparentPrice = apparentPrice;
+        this.paid = paid;
     }
 
     public String getName() {
@@ -41,6 +41,13 @@ public class Subscription implements Writable {
 
     public void setApparentPrice() {
         apparentPrice = 0;
+    }
+
+    // MODIFIES: this
+    // EFFECTS: resets all apparentPrice to price and sets paid to false
+    public void resetPrice() {
+        this.apparentPrice = this.price;
+        this.paid = false;
     }
 
     @Override

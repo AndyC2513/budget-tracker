@@ -7,6 +7,7 @@ import persistence.JsonWriter;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Scanner;
 
@@ -63,6 +64,7 @@ public class BudgetApp {
         System.out.println("\tp -> pay for a subscription");
         System.out.println("\tv -> view subscriptions");
         System.out.println("\tf -> add more budget");
+        System.out.println("\tn -> resets subscriptions");
         System.out.println("\ts -> save subscriptions to file");
         System.out.println("\tl -> load subscriptions from file");
         System.out.println("\tq -> quit");
@@ -86,6 +88,8 @@ public class BudgetApp {
             saveSubList();
         } else if (Objects.equals(command, "l")) {
             loadSubList();
+        } else if (Objects.equals(command, "n")) {
+            showReset();
         } else {
             System.out.println("Selection not valid...");
         }
@@ -111,6 +115,81 @@ public class BudgetApp {
         } catch (IOException e) {
             System.out.println("Unable to read from file: " + JSON_STORE);
         }
+    }
+
+    // EFFECTS: displays the possible reset options to user
+    private void showReset() {
+        if (subList.getNumEntSubs() == 0 && subList.getNumLivSubs() == 0 && subList.getNumAcSubs() == 0) {
+            System.out.println("\nThere are no subscriptions in all category!");
+        } else {
+            System.out.println("\nPlease enter category you want to reset");
+            System.out.println("\te <- entertainment");
+            System.out.println("\tl <- living expense");
+            System.out.println("\ta <- academic expense");
+            System.out.println("\tn <- reset all");
+            String choice = input.next();
+            if (Objects.equals(choice, "e")) {
+                resetEnt();
+            } else if (Objects.equals(choice, "l")) {
+                resetLiv();
+            } else if (Objects.equals(choice, "a")) {
+                resetAc();
+            } else if (Objects.equals(choice, "n")) {
+                resetAll();
+            } else {
+                System.out.println("Invalid choice");
+            }
+        }
+    }
+
+    // MODIFIES: this
+    // EFFECTS: resets all subscriptions from entertainment expense
+    private void resetEnt() {
+        if (subList.getNumEntSubs() == 0) {
+            System.out.println("\nThere are no subscriptions in this category!");
+        } else {
+            ArrayList<Subscription> ents = subList.getListOfEntSubs();
+            for (Subscription s : ents) {
+                s.resetPrice();
+            }
+            System.out.println("All entertainment subscriptions reset");
+        }
+    }
+
+    // MODIFIES: this
+    // EFFECTS: resets all subscriptions from living expense
+    private void resetLiv() {
+        if (subList.getNumLivSubs() == 0) {
+            System.out.println("\nThere are no subscriptions in this category!");
+        } else {
+            ArrayList<Subscription> livs = subList.getListOfLivSubs();
+            for (Subscription s : livs) {
+                s.resetPrice();
+            }
+            System.out.println("All living expense subscriptions reset");
+        }
+    }
+
+    // MODIFIES: this
+    // EFFECTS: resets all subscriptions from academics
+    private void resetAc() {
+        if (subList.getNumAcSubs() == 0) {
+            System.out.println("\nThere are no subscriptions in this category!");
+        } else {
+            ArrayList<Subscription> acs = subList.getListOfAcSubs();
+            for (Subscription s : acs) {
+                s.resetPrice();
+            }
+            System.out.println("All academic subscriptions reset");
+        }
+    }
+
+    // MODIFIES: this
+    // EFFECTS: resets all subscriptions
+    private void resetAll() {
+        resetEnt();
+        resetLiv();
+        resetAc();
     }
 
     // EFFECTS: asks user for name and price to construct a new Subscription
@@ -147,20 +226,45 @@ public class BudgetApp {
 
     // EFFECTS: asks user which category they want to remove a subscription from
     private void showRemove() {
-        System.out.println("\nWhich category do you want to remove from?");
-        System.out.println("\te <- entertainment");
-        System.out.println("\tl <- living expense");
-        System.out.println("\ta <- academic expense");
-        String choice = input.next();
-        if (Objects.equals(choice,"e")) {
-            showRemoveEnt();
-        } else if (Objects.equals(choice, "l")) {
-            showRemoveLiv();
-        } else if (Objects.equals(choice, "a")) {
-            showRemoveAc();
+        if (subList.getNumEntSubs() == 0 && subList.getNumLivSubs() == 0 && subList.getNumAcSubs() == 0) {
+            System.out.println("\nThere are no subscriptions in all category!");
         } else {
-            System.out.println("Invalid choice");
+            System.out.println("\nWhich category do you want to remove from?");
+            System.out.println("\te <- entertainment");
+            System.out.println("\tl <- living expense");
+            System.out.println("\ta <- academic expense");
+            System.out.println("\tr <- remove all");
+            String choice = input.next();
+            if (Objects.equals(choice, "e")) {
+                showRemoveEnt();
+            } else if (Objects.equals(choice, "l")) {
+                showRemoveLiv();
+            } else if (Objects.equals(choice, "a")) {
+                showRemoveAc();
+            } else if (Objects.equals(choice, "r")) {
+                removeAll();
+            } else {
+                System.out.println("Invalid choice");
+            }
         }
+    }
+
+    // MODIFIES: this
+    // EFFECTS: removes all subscriptions from all categories
+    private void removeAll() {
+        for (int i = 0; i == subList.getNumEntSubs() - 1; i++) {
+            Subscription sub = subList.getListOfEntSubs().get(i);
+            subList.removeEntSub(sub);
+        }
+        for (int i = 0; i == subList.getNumLivSubs() - 1; i++) {
+            Subscription sub = subList.getListOfLivSubs().get(i);
+            subList.removeLivSub(sub);
+        }
+        for (int i = 0; i == subList.getNumAcSubs() - 1; i++) {
+            Subscription sub = subList.getListOfAcSubs().get(i);
+            subList.removeAcSub(sub);
+        }
+        System.out.println("\nAll subscriptions cleared!");
     }
 
     // MODIFIES: this
@@ -228,19 +332,23 @@ public class BudgetApp {
 
     // EFFECTS: asks user to choose a category to pay for a subscription in that category
     private void showPay() {
-        System.out.println("\nWhich category do you want to pay for?");
-        System.out.println("\te <- entertainment");
-        System.out.println("\tl <- living expense");
-        System.out.println("\ta <- academic expense");
-        String choice = input.next();
-        if (Objects.equals(choice,"e")) {
-            showPayEnt();
-        } else if (Objects.equals(choice, "l")) {
-            showPayLiv();
-        } else if (Objects.equals(choice, "a")) {
-            showPayAc();
+        if (subList.getNumAcSubs() == 0) {
+            System.out.println("\nThere are no subscriptions in this category!");
         } else {
-            System.out.println("Invalid choice");
+            System.out.println("\nWhich category do you want to pay for?");
+            System.out.println("\te <- entertainment");
+            System.out.println("\tl <- living expense");
+            System.out.println("\ta <- academic expense");
+            String choice = input.next();
+            if (Objects.equals(choice, "e")) {
+                showPayEnt();
+            } else if (Objects.equals(choice, "l")) {
+                showPayLiv();
+            } else if (Objects.equals(choice, "a")) {
+                showPayAc();
+            } else {
+                System.out.println("Invalid choice");
+            }
         }
     }
 
@@ -325,7 +433,7 @@ public class BudgetApp {
         System.out.println("\ta <- academic expense");
         System.out.println("\tv <- view all");
         String choice = input.next();
-        if (Objects.equals(choice,"e")) {
+        if (Objects.equals(choice, "e")) {
             showEnt();
         } else if (Objects.equals(choice, "l")) {
             showLiv();
