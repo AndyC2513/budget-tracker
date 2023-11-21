@@ -6,12 +6,20 @@
         "paid": false,
         "apparent": 1237.99
     }],
-    "entertainment": [{
-        "price": 28.99,
-        "name": "Netflix",
-        "paid": false,
-        "apparent": 28.99
-    }],
+    "entertainment": [
+        {
+            "price": 28.99,
+            "name": "Netflix",
+            "paid": false,
+            "apparent": 28.99
+        },
+        {
+            "price": 8.99,
+            "name": "Weibo",
+            "paid": false,
+            "apparent": 8.99
+        }
+    ],
     "academic": [{
         "price": 22,
         "name": "Textbook",
