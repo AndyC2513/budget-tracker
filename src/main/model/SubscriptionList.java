@@ -67,7 +67,7 @@ public class SubscriptionList implements Writable {
     //          if not enough fund, inform the user of their lack of funds
     public boolean payForEntSub(Subscription sub) {
         if (entertainment.contains(sub)) {
-            if (entBudget >= sub.getPrice()) {
+            if (entBudget >= sub.getPrice() && !sub.isPaid()) {
                 entBudget = entBudget - sub.getPrice();
                 sub.setPaid();
                 sub.setApparentPrice();
@@ -85,7 +85,7 @@ public class SubscriptionList implements Writable {
     //          if not enough fund, inform the user of their lack of funds
     public boolean payForLivSub(Subscription sub) {
         if (living.contains(sub)) {
-            if (livBudget >= sub.getPrice()) {
+            if (livBudget >= sub.getPrice() && !sub.isPaid()) {
                 livBudget = livBudget - sub.getPrice();
                 sub.setPaid();
                 sub.setApparentPrice();
@@ -103,7 +103,7 @@ public class SubscriptionList implements Writable {
     //          if not enough fund, inform the user of their lack of funds
     public boolean payForAcSub(Subscription sub) {
         if (academic.contains(sub)) {
-            if (acBudget >= sub.getPrice()) {
+            if (acBudget >= sub.getPrice() && !sub.isPaid()) {
                 acBudget = acBudget - sub.getPrice();
                 sub.setPaid();
                 sub.setApparentPrice();

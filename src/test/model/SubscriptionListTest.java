@@ -114,65 +114,61 @@ class SubscriptionListTest {
         assertEquals(0, testSubList.getNumLivSubs());
         assertEquals(0, testSubList.getNumAcSubs());
 
-        List<Subscription> expected = new ArrayList<>();
-        expected.add(testSub1);
-
         testSubList.addEntSub(testSub1);
-        assertEquals(expected, testSubList.getListOfEntSubs());
         assertEquals(1, testSubList.getNumEntSubs());
 
-        testSubList.addLivSub(testSub1);
-        assertEquals(expected, testSubList.getListOfLivSubs());
+        testSubList.addLivSub(testSub2);
         assertEquals(1, testSubList.getNumLivSubs());
 
-        testSubList.addAcSub(testSub1);
-        assertEquals(expected, testSubList.getListOfAcSubs());
+        testSubList.addAcSub(testSub3);
         assertEquals(1, testSubList.getNumAcSubs());
 
         assertTrue(testSubList.payForEntSub(testSub1));
-        assertTrue(testSubList.payForLivSub(testSub1));
-        assertTrue(testSubList.payForAcSub(testSub1));
+        assertFalse(testSubList.payForEntSub(testSub1));
+        assertTrue(testSubList.payForLivSub(testSub2));
+        assertFalse(testSubList.payForLivSub(testSub2));
+        assertFalse(testSubList.payForAcSub(testSub3));
 
         assertFalse(testSubList.payForEntSub(testSub2));
         assertFalse(testSubList.payForLivSub(testSub2));
         assertFalse(testSubList.payForAcSub(testSub2));
 
         assertEquals(971.01, testSubList.getEntBudget());
-        assertEquals(18.99, testSub2.getApparentPrice());
+        assertEquals(0, testSub2.getApparentPrice());
         assertEquals(18.99, testSub2.getPrice());
-        assertFalse(testSub2.isPaid());
+        assertTrue(testSub2.isPaid());
         assertEquals(0, testSub1.getApparentPrice());
         assertEquals(28.99, testSub1.getPrice());
         assertTrue(testSub1.isPaid());
 
-        assertEquals(971.01, testSubList.getLivBudget());
-        assertEquals(18.99, testSub2.getApparentPrice());
+        assertEquals(981.01, testSubList.getLivBudget());
+        assertEquals(0, testSub2.getApparentPrice());
         assertEquals(18.99, testSub2.getPrice());
-        assertFalse(testSub2.isPaid());
+        assertTrue(testSub2.isPaid());
         assertEquals(0, testSub1.getApparentPrice());
         assertEquals(28.99, testSub1.getPrice());
         assertTrue(testSub1.isPaid());
 
-        assertEquals(971.01, testSubList.getAcBudget());
-        assertEquals(18.99, testSub2.getApparentPrice());
+        assertEquals(1000.0, testSubList.getAcBudget());
+        assertEquals(0, testSub2.getApparentPrice());
         assertEquals(18.99, testSub2.getPrice());
-        assertFalse(testSub2.isPaid());
+        assertTrue(testSub2.isPaid());
         assertEquals(0, testSub1.getApparentPrice());
         assertEquals(28.99, testSub1.getPrice());
         assertTrue(testSub1.isPaid());
 
         testSubList.addEntSub(testSub2);
-        assertTrue(testSubList.payForEntSub(testSub2));
+        assertFalse(testSubList.payForEntSub(testSub2));
         assertEquals(0, testSub2.getApparentPrice());
         assertEquals(18.99, testSub2.getPrice());
 
         testSubList.addLivSub(testSub2);
-        assertTrue(testSubList.payForLivSub(testSub2));
+        assertFalse(testSubList.payForLivSub(testSub2));
         assertEquals(0, testSub2.getApparentPrice());
         assertEquals(18.99, testSub2.getPrice());
 
         testSubList.addAcSub(testSub2);
-        assertTrue(testSubList.payForAcSub(testSub2));
+        assertFalse(testSubList.payForAcSub(testSub2));
         assertEquals(0, testSub2.getApparentPrice());
         assertEquals(18.99, testSub2.getPrice());
 

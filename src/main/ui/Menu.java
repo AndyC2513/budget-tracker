@@ -32,12 +32,20 @@ public class Menu extends JFrame implements ActionListener {
     private static final String removeLivString = "Remove from Living Expense";
     private static final String removeAcString = "Remove from Academic Expense";
 
-    private static final String enterEntString = "Remove Entertainment Sub Associated";
-    private static final String enterLivString = "Remove Living Expense Sub Associated";
-    private static final String enterAcString = "Remove Academic Expense Sub Associated";
+    private static final String enterEntString = "Remove Entertainment Subscription Associated";
+    private static final String enterLivString = "Remove Living Expense Subscription Associated";
+    private static final String enterAcString = "Remove Academic Expense Subscription Associated";
+
+    private static final String payEntString = "Pay for a Entertainment Subscription";
+    private static final String payLivString = "Pay for a Living Expense Subscription";
+    private static final String payAcString = "Pay for a Academic Expense Subscription";
+
+    private static final String enterEntPayString = "Pay for Entertainment Subscription Associated";
+    private static final String enterLivPayString = "Pay for Living Expense Subscription Associated";
+    private static final String enterAcPayString = "Pay for Academic Expense Subscription Associated";
 
     private static final int WIDTH = 1100;
-    private static final int HEIGHT = 500;
+    private static final int HEIGHT = 800;
 
     private SubscriptionList subList;
     private JsonReader jsonReader;
@@ -52,6 +60,36 @@ public class Menu extends JFrame implements ActionListener {
     private JButton fundButton;
     private JButton saveButton;
     private JButton loadButton;
+
+    private JPanel payPanel;
+    private JLabel payLabel;
+    private JButton payEntButton;
+    private JButton payLivButton;
+    private JButton payAcButton;
+
+    private JPanel payEntPanel;
+    private JScrollPane payEntScroll;
+    private JLabel payEntSubs;
+    private JLabel payEntLabel;
+    private JLabel payEntInstruct;
+    private JTextField payEntText;
+    private JButton payEntChoice;
+
+    private JPanel payLivPanel;
+    private JScrollPane payLivScroll;
+    private JLabel payLivSubs;
+    private JLabel payLivLabel;
+    private JLabel payLivInstruct;
+    private JTextField payLivText;
+    private JButton payLivChoice;
+
+    private JPanel payAcPanel;
+    private JScrollPane payAcScroll;
+    private JLabel payAcSubs;
+    private JLabel payAcLabel;
+    private JLabel payAcInstruct;
+    private JTextField payAcText;
+    private JButton payAcChoice;
 
     private JPanel viewPanel;
     private JLabel viewEntLabel;
@@ -130,9 +168,267 @@ public class Menu extends JFrame implements ActionListener {
         makeAddPanel();
         makeRemovePanel();
         makeViewPanel();
+        makePayPanel();
 
         mainPanel.setVisible(true);
         setResizable(false);
+    }
+
+    public void makePayPanel() {
+        payPanel = new JPanel(new GridLayout(5,1));
+        JButton returnButton = new JButton(returnString);
+        returnButton.setActionCommand(returnString);
+        returnButton.addActionListener(this);
+        returnButton.setBackground(Color.WHITE);
+        returnButton.setForeground(Color.BLACK);
+        returnButton.setFont(new Font("Arial", Font.BOLD, 12));
+        payPanel.add(returnButton);
+        pack();
+        setLocationRelativeTo(null);
+        setVisible(true);
+
+        createPayTexts();
+        addLabelstoPay();
+        makePayEntPanel();
+        makePayLivPanel();
+        makePayAcPanel();
+    }
+
+    public void makePayAcPanel() {
+        payAcPanel = new JPanel(new GridLayout(6,1));
+        JButton returnButton = new JButton(returnString);
+        returnButton.setActionCommand(returnString);
+        returnButton.addActionListener(this);
+        returnButton.setBackground(Color.WHITE);
+        returnButton.setForeground(Color.BLACK);
+        returnButton.setFont(new Font("Arial", Font.BOLD, 12));
+        payAcPanel.add(returnButton);
+        pack();
+        setLocationRelativeTo(null);
+        setVisible(true);
+
+        createPayAcTexts();
+        addLabelstoPayAc();
+    }
+
+    public void addLabelstoPayAc() {
+        payAcPanel.add(payAcLabel);
+        payAcPanel.add(payAcScroll);
+        payAcPanel.add(payAcInstruct);
+        payAcPanel.add(payAcText);
+        payAcPanel.add(payAcChoice);
+    }
+
+    public void createPayAcTexts() {
+        payAcLabel = new JLabel("Living Expense Subscriptions");
+
+        payAcSubs = new JLabel("");
+        payAcSubs.setText(acSubs.getText());
+
+        payAcScroll = new JScrollPane(payAcSubs, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
+                JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+
+        payAcInstruct = new JLabel("Enter the Associated Integer to Pay");
+
+        payAcText = new JTextField(10);
+
+        payAcChoice = new JButton(enterAcPayString);
+        payAcChoice.setActionCommand(enterAcPayString);
+        payAcChoice.addActionListener(this);
+
+        adjustPayAcSettings();
+    }
+
+    public void adjustPayAcSettings() {
+        payAcLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        payAcLabel.setFont(new Font("Arial", Font.BOLD, 24));
+
+        payAcSubs.setFont(new Font("Arial", Font.BOLD, 12));
+        payAcSubs.setHorizontalAlignment(SwingConstants.CENTER);
+
+        payAcScroll.setSize(new Dimension(100, 100));
+
+        payAcInstruct.setFont(new Font("Arial", Font.BOLD, 24));
+        payAcInstruct.setHorizontalAlignment(SwingConstants.CENTER);
+
+        payAcText.setMaximumSize(new Dimension(1200, 400));
+        payAcText.setHorizontalAlignment(SwingConstants.CENTER);
+
+        payAcChoice.setBackground(Color.WHITE);
+        payAcChoice.setForeground(Color.BLACK);
+        payAcChoice.setFont(new Font("Arial", Font.BOLD, 12));
+    }
+
+    public void makePayLivPanel() {
+        payLivPanel = new JPanel(new GridLayout(6,1));
+        JButton returnButton = new JButton(returnString);
+        returnButton.setActionCommand(returnString);
+        returnButton.addActionListener(this);
+        returnButton.setBackground(Color.WHITE);
+        returnButton.setForeground(Color.BLACK);
+        returnButton.setFont(new Font("Arial", Font.BOLD, 12));
+        payLivPanel.add(returnButton);
+        pack();
+        setLocationRelativeTo(null);
+        setVisible(true);
+
+        createPayLivTexts();
+        addLabelstoPayLiv();
+    }
+
+    public void addLabelstoPayLiv() {
+        payLivPanel.add(payLivLabel);
+        payLivPanel.add(payLivScroll);
+        payLivPanel.add(payLivInstruct);
+        payLivPanel.add(payLivText);
+        payLivPanel.add(payLivChoice);
+    }
+
+    public void createPayLivTexts() {
+        payLivLabel = new JLabel("Living Expense Subscriptions");
+
+        payLivSubs = new JLabel("");
+        payLivSubs.setText(livSubs.getText());
+
+        payLivScroll = new JScrollPane(payLivSubs, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
+                JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+
+        payLivInstruct = new JLabel("Enter the Associated Integer to Pay");
+
+        payLivText = new JTextField(10);
+
+        payLivChoice = new JButton(enterLivPayString);
+        payLivChoice.setActionCommand(enterLivPayString);
+        payLivChoice.addActionListener(this);
+
+        adjustPayLivSettings();
+    }
+
+    public void adjustPayLivSettings() {
+        payLivLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        payLivLabel.setFont(new Font("Arial", Font.BOLD, 24));
+
+        payLivSubs.setFont(new Font("Arial", Font.BOLD, 12));
+        payLivSubs.setHorizontalAlignment(SwingConstants.CENTER);
+
+        payLivScroll.setSize(new Dimension(100, 100));
+
+        payLivInstruct.setFont(new Font("Arial", Font.BOLD, 24));
+        payLivInstruct.setHorizontalAlignment(SwingConstants.CENTER);
+
+        payLivText.setMaximumSize(new Dimension(1200, 400));
+        payLivText.setHorizontalAlignment(SwingConstants.CENTER);
+
+        payLivChoice.setBackground(Color.WHITE);
+        payLivChoice.setForeground(Color.BLACK);
+        payLivChoice.setFont(new Font("Arial", Font.BOLD, 12));
+    }
+
+    public void makePayEntPanel() {
+        payEntPanel = new JPanel(new GridLayout(6,1));
+        JButton returnButton = new JButton(returnString);
+        returnButton.setActionCommand(returnString);
+        returnButton.addActionListener(this);
+        returnButton.setBackground(Color.WHITE);
+        returnButton.setForeground(Color.BLACK);
+        returnButton.setFont(new Font("Arial", Font.BOLD, 12));
+        payEntPanel.add(returnButton);
+        pack();
+        setLocationRelativeTo(null);
+        setVisible(true);
+
+        createPayEntTexts();
+        addLabelstoPayEnt();
+    }
+
+    public void addLabelstoPayEnt() {
+        payEntPanel.add(payEntLabel);
+        payEntPanel.add(payEntScroll);
+        payEntPanel.add(payEntInstruct);
+        payEntPanel.add(payEntText);
+        payEntPanel.add(payEntChoice);
+    }
+
+    public void createPayEntTexts() {
+        payEntLabel = new JLabel("Entertainment Subscriptions");
+
+        payEntSubs = new JLabel("");
+        payEntSubs.setText(entSubs.getText());
+
+        payEntScroll = new JScrollPane(payEntSubs, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
+                JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+
+        payEntInstruct = new JLabel("Enter the Associated Integer to Pay");
+
+        payEntText = new JTextField(10);
+
+        payEntChoice = new JButton(enterEntPayString);
+        payEntChoice.setActionCommand(enterEntPayString);
+        payEntChoice.addActionListener(this);
+
+        adjustPayEntSettings();
+    }
+
+    public void adjustPayEntSettings() {
+        payEntLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        payEntLabel.setFont(new Font("Arial", Font.BOLD, 24));
+
+        payEntSubs.setFont(new Font("Arial", Font.BOLD, 12));
+        payEntSubs.setHorizontalAlignment(SwingConstants.CENTER);
+
+        payEntScroll.setSize(new Dimension(100, 100));
+
+        payEntInstruct.setFont(new Font("Arial", Font.BOLD, 24));
+        payEntInstruct.setHorizontalAlignment(SwingConstants.CENTER);
+
+        payEntText.setMaximumSize(new Dimension(1200, 400));
+        payEntText.setHorizontalAlignment(SwingConstants.CENTER);
+
+        payEntChoice.setBackground(Color.WHITE);
+        payEntChoice.setForeground(Color.BLACK);
+        payEntChoice.setFont(new Font("Arial", Font.BOLD, 12));
+    }
+
+    public void addLabelstoPay() {
+        payPanel.add(payLabel);
+        payPanel.add(payEntButton);
+        payPanel.add(payLivButton);
+        payPanel.add(payAcButton);
+    }
+
+    public void createPayTexts() {
+        payLabel = new JLabel("Choose a Category");
+
+        payEntButton = new JButton(payEntString);
+        payEntButton.setActionCommand(payEntString);
+        payEntButton.addActionListener(this);
+
+        payLivButton = new JButton(payLivString);
+        payLivButton.setActionCommand(payLivString);
+        payLivButton.addActionListener(this);
+
+        payAcButton = new JButton(payAcString);
+        payAcButton.setActionCommand(payAcString);
+        payAcButton.addActionListener(this);
+
+        adjustPaySettings();
+    }
+
+    public void adjustPaySettings() {
+        payLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        payLabel.setFont(new Font("Arial", Font.BOLD, 24));
+
+        payEntButton.setBackground(Color.WHITE);
+        payEntButton.setForeground(Color.BLACK);
+        payEntButton.setFont(new Font("Arial", Font.BOLD, 12));
+
+        payLivButton.setBackground(Color.WHITE);
+        payLivButton.setForeground(Color.BLACK);
+        payLivButton.setFont(new Font("Arial", Font.BOLD, 12));
+
+        payAcButton.setBackground(Color.WHITE);
+        payAcButton.setForeground(Color.BLACK);
+        payAcButton.setFont(new Font("Arial", Font.BOLD, 12));
     }
 
     public void makeViewPanel() {
@@ -152,7 +448,7 @@ public class Menu extends JFrame implements ActionListener {
         addLabelstoView();
     }
 
-    private void addLabelstoView() {
+    public void addLabelstoView() {
         viewPanel.add(viewEntLabel);
         viewPanel.add(viewEntScroll);
         viewPanel.add(viewLivLabel);
@@ -634,7 +930,7 @@ public class Menu extends JFrame implements ActionListener {
         } else if (e.getActionCommand().equals(viewString)) {
             initViewPanel();
         } else if (e.getActionCommand().equals(payString)) {
-            System.out.println("D");
+            initPayPanel();
         } else if (e.getActionCommand().equals(fundString)) {
             System.out.println("E");
         } else if (e.getActionCommand().equals(saveString)) {
@@ -681,22 +977,96 @@ public class Menu extends JFrame implements ActionListener {
             updateEntSubs();
             updateLivSubs();
             updateAcSubs();
-            returnToMenu();
         } else if (e.getActionCommand().equals(enterLivString)) {
             subList.removeLivSub(subList.getListOfLivSubs().get(parseInt(removeLivText.getText())));
             System.out.println("Subscription Removed!");
             updateEntSubs();
             updateLivSubs();
             updateAcSubs();
-            returnToMenu();
         } else if (e.getActionCommand().equals(enterAcString)) {
             subList.removeAcSub(subList.getListOfAcSubs().get(parseInt(removeAcText.getText())));
             System.out.println("Subscription Removed!");
             updateEntSubs();
             updateLivSubs();
             updateAcSubs();
-            returnToMenu();
+        } else if (e.getActionCommand().equals(payEntString)) {
+            initPayEntPanel();
+        } else if (e.getActionCommand().equals(payLivString)) {
+            initPayLivPanel();
+        } else if (e.getActionCommand().equals(payAcString)) {
+            initPayAcPanel();
+        } else if (e.getActionCommand().equals(enterEntPayString)) {
+            subList.payForEntSub(subList.getListOfEntSubs().get(parseInt(payEntText.getText())));
+            updateEntSubs();
+            updateLivSubs();
+            updateAcSubs();
+            payEntSubs.setText(entSubs.getText());
+            payLivSubs.setText(livSubs.getText());
+            payAcSubs.setText(acSubs.getText());
         }
+    }
+
+    public void initPayAcPanel() {
+        add(payAcPanel);
+        addPanel.setVisible(false);
+        mainPanel.setVisible(false);
+        removePanel.setVisible(false);
+        removeEntPanel.setVisible(false);
+        removeLivPanel.setVisible(false);
+        removeAcPanel.setVisible(false);
+        viewPanel.setVisible(false);
+        payPanel.setVisible(false);
+        payEntPanel.setVisible(false);
+        payLivPanel.setVisible(false);
+        payAcPanel.setVisible(true);
+    }
+
+    public void initPayLivPanel() {
+        add(payLivPanel);
+        addPanel.setVisible(false);
+        mainPanel.setVisible(false);
+        removePanel.setVisible(false);
+        removeEntPanel.setVisible(false);
+        removeLivPanel.setVisible(false);
+        removeAcPanel.setVisible(false);
+        viewPanel.setVisible(false);
+        payPanel.setVisible(false);
+        payEntPanel.setVisible(false);
+        payLivPanel.setVisible(true);
+        payAcPanel.setVisible(false);
+    }
+
+    public void initPayEntPanel() {
+        add(payEntPanel);
+        addPanel.setVisible(false);
+        mainPanel.setVisible(false);
+        removePanel.setVisible(false);
+        removeEntPanel.setVisible(false);
+        removeLivPanel.setVisible(false);
+        removeAcPanel.setVisible(false);
+        viewPanel.setVisible(false);
+        payPanel.setVisible(false);
+        payEntPanel.setVisible(true);
+        payLivPanel.setVisible(false);
+        payAcPanel.setVisible(false);
+    }
+
+    public void initPayPanel() {
+        payEntSubs.setText(entSubs.getText());
+        payLivSubs.setText(livSubs.getText());
+        payAcSubs.setText(acSubs.getText());
+        add(payPanel);
+        addPanel.setVisible(false);
+        mainPanel.setVisible(false);
+        removePanel.setVisible(false);
+        removeEntPanel.setVisible(false);
+        removeLivPanel.setVisible(false);
+        removeAcPanel.setVisible(false);
+        viewPanel.setVisible(false);
+        payPanel.setVisible(true);
+        payEntPanel.setVisible(false);
+        payLivPanel.setVisible(false);
+        payAcPanel.setVisible(false);
     }
 
     public void initViewPanel() {
@@ -711,6 +1081,10 @@ public class Menu extends JFrame implements ActionListener {
         removeLivPanel.setVisible(false);
         removeAcPanel.setVisible(false);
         viewPanel.setVisible(true);
+        payPanel.setVisible(false);
+        payEntPanel.setVisible(false);
+        payLivPanel.setVisible(false);
+        payAcPanel.setVisible(false);
     }
 
     public void initRemoveAcPanel() {
@@ -722,6 +1096,10 @@ public class Menu extends JFrame implements ActionListener {
         removeLivPanel.setVisible(false);
         removeAcPanel.setVisible(true);
         viewPanel.setVisible(false);
+        payPanel.setVisible(false);
+        payEntPanel.setVisible(false);
+        payLivPanel.setVisible(false);
+        payAcPanel.setVisible(false);
     }
 
     public void initRemoveLivPanel() {
@@ -733,6 +1111,10 @@ public class Menu extends JFrame implements ActionListener {
         removeLivPanel.setVisible(true);
         removeAcPanel.setVisible(false);
         viewPanel.setVisible(false);
+        payPanel.setVisible(false);
+        payEntPanel.setVisible(false);
+        payLivPanel.setVisible(false);
+        payAcPanel.setVisible(false);
     }
 
     public void initRemoveEntPanel() {
@@ -744,6 +1126,10 @@ public class Menu extends JFrame implements ActionListener {
         removeLivPanel.setVisible(false);
         removeAcPanel.setVisible(false);
         viewPanel.setVisible(false);
+        payPanel.setVisible(false);
+        payEntPanel.setVisible(false);
+        payLivPanel.setVisible(false);
+        payAcPanel.setVisible(false);
     }
 
     public void initRemovePanel() {
@@ -755,6 +1141,10 @@ public class Menu extends JFrame implements ActionListener {
         removeLivPanel.setVisible(false);
         removeAcPanel.setVisible(false);
         viewPanel.setVisible(false);
+        payPanel.setVisible(false);
+        payEntPanel.setVisible(false);
+        payLivPanel.setVisible(false);
+        payAcPanel.setVisible(false);
     }
 
     public void initChoosePanel() {
@@ -767,6 +1157,10 @@ public class Menu extends JFrame implements ActionListener {
         removeLivPanel.setVisible(false);
         removeAcPanel.setVisible(false);
         viewPanel.setVisible(false);
+        payPanel.setVisible(false);
+        payEntPanel.setVisible(false);
+        payLivPanel.setVisible(false);
+        payAcPanel.setVisible(false);
     }
 
     public void returnToMenu() {
@@ -778,6 +1172,10 @@ public class Menu extends JFrame implements ActionListener {
         removeLivPanel.setVisible(false);
         removeAcPanel.setVisible(false);
         viewPanel.setVisible(false);
+        payPanel.setVisible(false);
+        payEntPanel.setVisible(false);
+        payLivPanel.setVisible(false);
+        payAcPanel.setVisible(false);
     }
 
     public void initAddPanel() {
@@ -790,6 +1188,10 @@ public class Menu extends JFrame implements ActionListener {
         removeLivPanel.setVisible(false);
         removeAcPanel.setVisible(false);
         viewPanel.setVisible(false);
+        payPanel.setVisible(false);
+        payEntPanel.setVisible(false);
+        payLivPanel.setVisible(false);
+        payAcPanel.setVisible(false);
     }
 
     public void loadSublist() {
