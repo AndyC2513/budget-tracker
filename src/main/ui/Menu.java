@@ -32,7 +32,9 @@ public class Menu extends JFrame implements ActionListener {
     private static final String removeLivString = "Remove from Living Expense";
     private static final String removeAcString = "Remove from Academic Expense";
 
-    private static final String enterEntString = "Remove Sub Associated";
+    private static final String enterEntString = "Remove Entertainment Sub Associated";
+    private static final String enterLivString = "Remove Living Expense Sub Associated";
+    private static final String enterAcString = "Remove Academic Expense Sub Associated";
 
     private static final int WIDTH = 1100;
     private static final int HEIGHT = 500;
@@ -51,6 +53,17 @@ public class Menu extends JFrame implements ActionListener {
     private JButton saveButton;
     private JButton loadButton;
 
+    private JPanel viewPanel;
+    private JLabel viewEntLabel;
+    private JScrollPane viewEntScroll;
+    private JLabel viewEntSubs;
+    private JLabel viewLivLabel;
+    private JScrollPane viewLivScroll;
+    private JLabel viewLivSubs;
+    private JLabel viewAcLabel;
+    private JScrollPane viewAcScroll;
+    private JLabel viewAcSubs;
+
     private JPanel addPanel;
     private JLabel name;
     private JLabel price;
@@ -65,15 +78,29 @@ public class Menu extends JFrame implements ActionListener {
     private JButton removeAcButton;
 
     private JPanel removeEntPanel;
+    private JScrollPane removeEntScroll;
     private JLabel removeEntLabel;
-    private JLabel removeEntSubs;
     private JLabel removeEntInstruct;
     private JTextField removeEntText;
     private JButton removeEntChoice;
 
-    private String entSubs;
-    private String livSubs;
-    private String acSubs;
+    private JPanel removeLivPanel;
+    private JScrollPane removeLivScroll;
+    private JLabel removeLivLabel;
+    private JLabel removeLivInstruct;
+    private JTextField removeLivText;
+    private JButton removeLivChoice;
+
+    private JPanel removeAcPanel;
+    private JScrollPane removeAcScroll;
+    private JLabel removeAcLabel;
+    private JLabel removeAcInstruct;
+    private JTextField removeAcText;
+    private JButton removeAcChoice;
+
+    private JLabel entSubs;
+    private JLabel livSubs;
+    private JLabel acSubs;
 
     private JPanel choosePanel;
     private JLabel chooseLabel;
@@ -101,13 +128,79 @@ public class Menu extends JFrame implements ActionListener {
         add(mainPanel);
 
         makeAddPanel();
-        makeChoosePanel();
         makeRemovePanel();
-        // makeRemoveLivPanel();
-        // makeRemoveAcPanel();
+        makeViewPanel();
 
         mainPanel.setVisible(true);
         setResizable(false);
+    }
+
+    public void makeViewPanel() {
+        viewPanel = new JPanel(new GridLayout(7,1));
+        JButton returnButton = new JButton(returnString);
+        returnButton.setActionCommand(returnString);
+        returnButton.addActionListener(this);
+        returnButton.setBackground(Color.WHITE);
+        returnButton.setForeground(Color.BLACK);
+        returnButton.setFont(new Font("Arial", Font.BOLD, 12));
+        viewPanel.add(returnButton);
+        pack();
+        setLocationRelativeTo(null);
+        setVisible(true);
+
+        createViewTexts();
+        addLabelstoView();
+    }
+
+    private void addLabelstoView() {
+        viewPanel.add(viewEntLabel);
+        viewPanel.add(viewEntScroll);
+        viewPanel.add(viewLivLabel);
+        viewPanel.add(viewLivScroll);
+        viewPanel.add(viewAcLabel);
+        viewPanel.add(viewAcScroll);
+    }
+
+    public void createViewTexts() {
+        viewEntLabel = new JLabel("Entertainment");
+
+        viewEntSubs = new JLabel("");
+
+        viewEntScroll = new JScrollPane(viewEntSubs, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
+                JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+
+        viewLivLabel = new JLabel("Living Expense");
+
+        viewLivSubs = new JLabel("");
+
+        viewLivScroll = new JScrollPane(viewLivSubs, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
+                JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+
+        viewAcLabel = new JLabel("Academic Expense");
+
+        viewAcSubs = new JLabel("");
+
+        viewAcScroll = new JScrollPane(viewAcSubs, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
+                JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+
+        adjustViewSettings();
+    }
+
+    public void adjustViewSettings() {
+        viewEntLabel.setMaximumSize(new Dimension(1200, 400));
+        viewEntLabel.setHorizontalAlignment(SwingConstants.CENTER);
+
+        viewEntSubs.setHorizontalAlignment(SwingConstants.CENTER);
+
+        viewLivLabel.setMaximumSize(new Dimension(1200, 400));
+        viewLivLabel.setHorizontalAlignment(SwingConstants.CENTER);
+
+        viewLivSubs.setHorizontalAlignment(SwingConstants.CENTER);
+
+        viewAcLabel.setMaximumSize(new Dimension(1200, 400));
+        viewAcLabel.setHorizontalAlignment(SwingConstants.CENTER);
+
+        viewAcSubs.setHorizontalAlignment(SwingConstants.CENTER);
     }
 
     public void makeRemoveEntPanel() {
@@ -129,7 +222,7 @@ public class Menu extends JFrame implements ActionListener {
 
     public void addLabelstoRemoveEnt() {
         removeEntPanel.add(removeEntLabel);
-        removeEntPanel.add(removeEntSubs);
+        removeEntPanel.add(removeEntScroll);
         removeEntPanel.add(removeEntInstruct);
         removeEntPanel.add(removeEntText);
         removeEntPanel.add(removeEntChoice);
@@ -138,7 +231,8 @@ public class Menu extends JFrame implements ActionListener {
     public void createRemoveEntTexts() {
         removeEntLabel = new JLabel("Entertainment Subscriptions");
 
-        removeEntSubs = new JLabel(entSubs);
+        removeEntScroll = new JScrollPane(entSubs, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
+                JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 
         removeEntInstruct = new JLabel("Enter the Associated Integer to Remove");
 
@@ -155,8 +249,10 @@ public class Menu extends JFrame implements ActionListener {
         removeEntLabel.setHorizontalAlignment(SwingConstants.CENTER);
         removeEntLabel.setFont(new Font("Arial", Font.BOLD, 24));
 
-        removeEntSubs.setFont(new Font("Arial", Font.BOLD, 12));
-        removeEntSubs.setHorizontalAlignment(SwingConstants.CENTER);
+        entSubs.setFont(new Font("Arial", Font.BOLD, 12));
+        entSubs.setHorizontalAlignment(SwingConstants.CENTER);
+
+        removeEntScroll.setSize(new Dimension(100, 100));
 
         removeEntInstruct.setFont(new Font("Arial", Font.BOLD, 24));
         removeEntInstruct.setHorizontalAlignment(SwingConstants.CENTER);
@@ -185,6 +281,132 @@ public class Menu extends JFrame implements ActionListener {
         createRemoveTexts();
         addLabelstoRemove();
         makeRemoveEntPanel();
+        makeRemoveLivPanel();
+        makeRemoveAcPanel();
+    }
+
+    public void makeRemoveAcPanel() {
+        removeAcPanel = new JPanel(new GridLayout(6,1));
+        JButton returnButton = new JButton(returnString);
+        returnButton.setActionCommand(returnString);
+        returnButton.addActionListener(this);
+        returnButton.setBackground(Color.WHITE);
+        returnButton.setForeground(Color.BLACK);
+        returnButton.setFont(new Font("Arial", Font.BOLD, 12));
+        removeAcPanel.add(returnButton);
+        pack();
+        setLocationRelativeTo(null);
+        setVisible(true);
+
+        createRemoveAcTexts();
+        addLabelstoRemoveAc();
+    }
+
+    public void addLabelstoRemoveAc() {
+        removeAcPanel.add(removeAcLabel);
+        removeAcPanel.add(removeAcScroll);
+        removeAcPanel.add(removeAcInstruct);
+        removeAcPanel.add(removeAcText);
+        removeAcPanel.add(removeAcChoice);
+    }
+
+    public void createRemoveAcTexts() {
+        removeAcLabel = new JLabel("Living Expense Subscriptions");
+
+        removeAcScroll = new JScrollPane(acSubs, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
+                JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+
+        removeAcInstruct = new JLabel("Enter the Associated Integer to Remove");
+
+        removeAcText = new JTextField(10);
+
+        removeAcChoice = new JButton(enterAcString);
+        removeAcChoice.setActionCommand(enterAcString);
+        removeAcChoice.addActionListener(this);
+
+        adjustRemoveAcSettings();
+    }
+
+    public void adjustRemoveAcSettings() {
+        removeAcLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        removeAcLabel.setFont(new Font("Arial", Font.BOLD, 24));
+
+        acSubs.setFont(new Font("Arial", Font.BOLD, 12));
+        acSubs.setHorizontalAlignment(SwingConstants.CENTER);
+
+        removeAcScroll.setSize(new Dimension(40, 100));
+
+        removeAcInstruct.setFont(new Font("Arial", Font.BOLD, 24));
+        removeAcInstruct.setHorizontalAlignment(SwingConstants.CENTER);
+
+        removeAcText.setMaximumSize(new Dimension(1200, 400));
+        removeAcText.setHorizontalAlignment(SwingConstants.CENTER);
+
+        removeAcChoice.setBackground(Color.WHITE);
+        removeAcChoice.setForeground(Color.BLACK);
+        removeAcChoice.setFont(new Font("Arial", Font.BOLD, 12));
+    }
+
+    public void makeRemoveLivPanel() {
+        removeLivPanel = new JPanel(new GridLayout(6,1));
+        JButton returnButton = new JButton(returnString);
+        returnButton.setActionCommand(returnString);
+        returnButton.addActionListener(this);
+        returnButton.setBackground(Color.WHITE);
+        returnButton.setForeground(Color.BLACK);
+        returnButton.setFont(new Font("Arial", Font.BOLD, 12));
+        removeLivPanel.add(returnButton);
+        pack();
+        setLocationRelativeTo(null);
+        setVisible(true);
+
+        createRemoveLivTexts();
+        addLabelstoRemoveLiv();
+    }
+
+    public void addLabelstoRemoveLiv() {
+        removeLivPanel.add(removeLivLabel);
+        removeLivPanel.add(removeLivScroll);
+        removeLivPanel.add(removeLivInstruct);
+        removeLivPanel.add(removeLivText);
+        removeLivPanel.add(removeLivChoice);
+    }
+
+    public void createRemoveLivTexts() {
+        removeLivLabel = new JLabel("Living Expense Subscriptions");
+
+        removeLivScroll = new JScrollPane(livSubs, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
+                JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+
+        removeLivInstruct = new JLabel("Enter the Associated Integer to Remove");
+
+        removeLivText = new JTextField(10);
+
+        removeLivChoice = new JButton(enterLivString);
+        removeLivChoice.setActionCommand(enterLivString);
+        removeLivChoice.addActionListener(this);
+
+        adjustRemoveLivSettings();
+    }
+
+    public void adjustRemoveLivSettings() {
+        removeLivLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        removeLivLabel.setFont(new Font("Arial", Font.BOLD, 24));
+
+        livSubs.setFont(new Font("Arial", Font.BOLD, 12));
+        livSubs.setHorizontalAlignment(SwingConstants.CENTER);
+
+        removeLivScroll.setSize(new Dimension(40, 100));
+
+        removeLivInstruct.setFont(new Font("Arial", Font.BOLD, 24));
+        removeLivInstruct.setHorizontalAlignment(SwingConstants.CENTER);
+
+        removeLivText.setMaximumSize(new Dimension(1200, 400));
+        removeLivText.setHorizontalAlignment(SwingConstants.CENTER);
+
+        removeLivChoice.setBackground(Color.WHITE);
+        removeLivChoice.setForeground(Color.BLACK);
+        removeLivChoice.setFont(new Font("Arial", Font.BOLD, 12));
     }
 
     public void addLabelstoRemove() {
@@ -303,6 +525,7 @@ public class Menu extends JFrame implements ActionListener {
 
         createSubTexts();
         addLabelsToAdd();
+        makeChoosePanel();
     }
 
     public void addLabelsToAdd() {
@@ -393,9 +616,12 @@ public class Menu extends JFrame implements ActionListener {
         subList = new SubscriptionList(0, 0, 0);
         jsonReader = new JsonReader(JSON_STORE);
         jsonWriter = new JsonWriter(JSON_STORE);
-        entSubs = "No Subscriptions";
-        livSubs = "No Subscriptions";
-        acSubs = "No Subscriptions";
+        entSubs = new JLabel("");
+        entSubs.setText("No Subscriptions!");
+        livSubs = new JLabel("");
+        livSubs.setText("No Subscriptions!");
+        acSubs = new JLabel("");
+        acSubs.setText("No Subscriptions!");
     }
 
     @SuppressWarnings("methodlength")
@@ -406,7 +632,7 @@ public class Menu extends JFrame implements ActionListener {
         } else if (e.getActionCommand().equals(removeString)) {
             initRemovePanel();
         } else if (e.getActionCommand().equals(viewString)) {
-            System.out.println("C");
+            initViewPanel();
         } else if (e.getActionCommand().equals(payString)) {
             System.out.println("D");
         } else if (e.getActionCommand().equals(fundString)) {
@@ -423,27 +649,90 @@ public class Menu extends JFrame implements ActionListener {
             subList.addEntSub(new Subscription(text1.getText(), Double.parseDouble(text2.getText()),
                     Double.parseDouble(text2.getText()), false));
             System.out.println("Subscription Added!");
+            updateEntSubs();
+            updateLivSubs();
+            updateAcSubs();
             returnToMenu();
         } else if (e.getActionCommand().equals(addLivString)) {
             subList.addLivSub(new Subscription(text1.getText(), Double.parseDouble(text2.getText()),
                     Double.parseDouble(text2.getText()), false));
             System.out.println("Subscription Added!");
+            updateEntSubs();
+            updateLivSubs();
+            updateAcSubs();
             returnToMenu();
         } else if (e.getActionCommand().equals(addAcString)) {
             subList.addAcSub(new Subscription(text1.getText(), Double.parseDouble(text2.getText()),
                     Double.parseDouble(text2.getText()), false));
             System.out.println("Subscription Added!");
+            updateEntSubs();
+            updateLivSubs();
+            updateAcSubs();
             returnToMenu();
         } else if (e.getActionCommand().equals(removeEntString)) {
             initRemoveEntPanel();
         } else if (e.getActionCommand().equals(removeLivString)) {
-            System.out.println("G");
+            initRemoveLivPanel();
         } else if (e.getActionCommand().equals(removeAcString)) {
-            System.out.println("H");
+            initRemoveAcPanel();
         } else if (e.getActionCommand().equals(enterEntString)) {
             subList.removeEntSub(subList.getListOfEntSubs().get(parseInt(removeEntText.getText())));
             System.out.println("Subscription Removed!");
+            updateEntSubs();
+            updateLivSubs();
+            updateAcSubs();
+            returnToMenu();
+        } else if (e.getActionCommand().equals(enterLivString)) {
+            subList.removeLivSub(subList.getListOfLivSubs().get(parseInt(removeLivText.getText())));
+            System.out.println("Subscription Removed!");
+            updateEntSubs();
+            updateLivSubs();
+            updateAcSubs();
+            returnToMenu();
+        } else if (e.getActionCommand().equals(enterAcString)) {
+            subList.removeAcSub(subList.getListOfAcSubs().get(parseInt(removeAcText.getText())));
+            System.out.println("Subscription Removed!");
+            updateEntSubs();
+            updateLivSubs();
+            updateAcSubs();
+            returnToMenu();
         }
+    }
+
+    public void initViewPanel() {
+        viewEntSubs.setText(entSubs.getText());
+        viewLivSubs.setText(livSubs.getText());
+        viewAcSubs.setText(acSubs.getText());
+        add(viewPanel);
+        addPanel.setVisible(false);
+        mainPanel.setVisible(false);
+        removePanel.setVisible(false);
+        removeEntPanel.setVisible(false);
+        removeLivPanel.setVisible(false);
+        removeAcPanel.setVisible(false);
+        viewPanel.setVisible(true);
+    }
+
+    public void initRemoveAcPanel() {
+        add(removeAcPanel);
+        addPanel.setVisible(false);
+        mainPanel.setVisible(false);
+        removePanel.setVisible(false);
+        removeEntPanel.setVisible(false);
+        removeLivPanel.setVisible(false);
+        removeAcPanel.setVisible(true);
+        viewPanel.setVisible(false);
+    }
+
+    public void initRemoveLivPanel() {
+        add(removeLivPanel);
+        addPanel.setVisible(false);
+        mainPanel.setVisible(false);
+        removePanel.setVisible(false);
+        removeEntPanel.setVisible(false);
+        removeLivPanel.setVisible(true);
+        removeAcPanel.setVisible(false);
+        viewPanel.setVisible(false);
     }
 
     public void initRemoveEntPanel() {
@@ -452,6 +741,9 @@ public class Menu extends JFrame implements ActionListener {
         mainPanel.setVisible(false);
         removePanel.setVisible(false);
         removeEntPanel.setVisible(true);
+        removeLivPanel.setVisible(false);
+        removeAcPanel.setVisible(false);
+        viewPanel.setVisible(false);
     }
 
     public void initRemovePanel() {
@@ -460,31 +752,106 @@ public class Menu extends JFrame implements ActionListener {
         mainPanel.setVisible(false);
         removePanel.setVisible(true);
         removeEntPanel.setVisible(false);
+        removeLivPanel.setVisible(false);
+        removeAcPanel.setVisible(false);
+        viewPanel.setVisible(false);
+    }
+
+    public void initChoosePanel() {
+        add(choosePanel);
+        addPanel.setVisible(false);
+        mainPanel.setVisible(false);
+        choosePanel.setVisible(true);
+        removePanel.setVisible(false);
+        removeEntPanel.setVisible(false);
+        removeLivPanel.setVisible(false);
+        removeAcPanel.setVisible(false);
+        viewPanel.setVisible(false);
+    }
+
+    public void returnToMenu() {
+        choosePanel.setVisible(false);
+        mainPanel.setVisible(true);
+        addPanel.setVisible(false);
+        removePanel.setVisible(false);
+        removeEntPanel.setVisible(false);
+        removeLivPanel.setVisible(false);
+        removeAcPanel.setVisible(false);
+        viewPanel.setVisible(false);
+    }
+
+    public void initAddPanel() {
+        add(addPanel);
+        choosePanel.setVisible(false);
+        addPanel.setVisible(true);
+        mainPanel.setVisible(false);
+        removePanel.setVisible(false);
+        removeEntPanel.setVisible(false);
+        removeLivPanel.setVisible(false);
+        removeAcPanel.setVisible(false);
+        viewPanel.setVisible(false);
     }
 
     public void loadSublist() {
         try {
             subList = jsonReader.read();
             System.out.println("Loaded subscriptions from " + JSON_STORE);
-            entSubs = updateEntString();
+            updateEntSubs();
+            updateLivSubs();
+            updateAcSubs();
         } catch (IOException e) {
             System.out.println("Unable to read from file: " + JSON_STORE);
         }
     }
 
-    private String updateEntString() {
-        if (subList.getNumEntSubs() == 0) {
-            return "No Subscriptions";
+    public void updateAcSubs() {
+        if (subList.getNumAcSubs() == 0) {
+            acSubs.setText("No Subscriptions!");
         } else {
-            StringBuilder stb = new StringBuilder();
+            String subs = "";
             int j = 0;
-            for (Subscription s : subList.getListOfEntSubs()) {
-                stb.append("\t" + (j) + " -> " + s.getName()
-                        + "\n" + "\tAmount to pay: " + "$" + s.getApparentPrice()
-                        + "\n" + "\tBudget available: " + "$" + subList.getEntBudget() + "\n");
+            for (Subscription s : subList.getListOfAcSubs()) {
+                subs += "" + (j) + " -> " + s.getName()
+                        + "\n" + "Amount to pay: " + "$" + s.getApparentPrice()
+                        + "\n" + "Budget available: " + "$" + subList.getAcBudget()
+                        + "\n" + "\n";
                 j++;
             }
-            return stb.toString();
+            acSubs.setText("<html><pre>Current Subscriptions: \n" + subs + "\n</pre></html>");
+        }
+    }
+
+    public void updateLivSubs() {
+        if (subList.getNumLivSubs() == 0) {
+            livSubs.setText("No Subscriptions!");
+        } else {
+            String subs = "";
+            int j = 0;
+            for (Subscription s : subList.getListOfLivSubs()) {
+                subs += "" + (j) + " -> " + s.getName()
+                        + "\n" + "Amount to pay: " + "$" + s.getApparentPrice()
+                        + "\n" + "Budget available: " + "$" + subList.getLivBudget()
+                        + "\n" + "\n";
+                j++;
+            }
+            livSubs.setText("<html><pre>Current Subscriptions: \n" + subs + "\n</pre></html>");
+        }
+    }
+
+    public void updateEntSubs() {
+        if (subList.getNumEntSubs() == 0) {
+            entSubs.setText("No Subscriptions!");
+        } else {
+            String subs = "";
+            int j = 0;
+            for (Subscription s : subList.getListOfEntSubs()) {
+                subs += "" + (j) + " -> " + s.getName()
+                        + "\n" + "Amount to pay: " + "$" + s.getApparentPrice()
+                        + "\n" + "Budget available: " + "$" + subList.getEntBudget()
+                        + "\n" + "\n";
+                j++;
+            }
+            entSubs.setText("<html><pre>Current Subscriptions: \n" + subs + "\n</pre></html>");
         }
     }
 
@@ -497,31 +864,5 @@ public class Menu extends JFrame implements ActionListener {
         } catch (FileNotFoundException e) {
             System.out.println("Unable to write to file: " + JSON_STORE);
         }
-    }
-
-    public void initChoosePanel() {
-        add(choosePanel);
-        addPanel.setVisible(false);
-        mainPanel.setVisible(false);
-        choosePanel.setVisible(true);
-        removePanel.setVisible(false);
-        removeEntPanel.setVisible(false);
-    }
-
-    public void returnToMenu() {
-        choosePanel.setVisible(false);
-        mainPanel.setVisible(true);
-        addPanel.setVisible(false);
-        removePanel.setVisible(false);
-        removeEntPanel.setVisible(false);
-    }
-
-    public void initAddPanel() {
-        add(addPanel);
-        choosePanel.setVisible(false);
-        addPanel.setVisible(true);
-        mainPanel.setVisible(false);
-        removePanel.setVisible(false);
-        removeEntPanel.setVisible(false);
     }
 }

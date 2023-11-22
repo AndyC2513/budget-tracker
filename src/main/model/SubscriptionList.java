@@ -25,6 +25,9 @@ public class SubscriptionList implements Writable {
         this.acBudget = acBudget;
     }
 
+    // EFFECTS: returns a string containing associated information about subs
+
+
     // MODIFIES: this
     // EFFECTS: adds a Subscription to the entertainment list
     public void addEntSub(Subscription sub) {
