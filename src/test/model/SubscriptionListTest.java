@@ -13,6 +13,7 @@ class SubscriptionListTest {
     private Subscription testSub1;
     private Subscription testSub2;
     private Subscription testSub3;
+    private Subscription testSub4;
 
     @BeforeEach
     void runBefore() {
@@ -20,6 +21,7 @@ class SubscriptionListTest {
         testSub1 = new Subscription("Netflix", 28.99, 28.99, false);
         testSub2 = new Subscription("Youtube", 18.99, 18.99, false);
         testSub3 = new Subscription("Big", 100000, 100000, false);
+        testSub4 = new Subscription("Small", 0.1, 0.1, false);
     }
 
     @Test
@@ -122,12 +124,16 @@ class SubscriptionListTest {
 
         testSubList.addAcSub(testSub3);
         assertEquals(1, testSubList.getNumAcSubs());
+        testSubList.addAcSub(testSub2);
+        assertEquals(2, testSubList.getNumAcSubs());
 
         assertTrue(testSubList.payForEntSub(testSub1));
         assertFalse(testSubList.payForEntSub(testSub1));
         assertTrue(testSubList.payForLivSub(testSub2));
         assertFalse(testSubList.payForLivSub(testSub2));
         assertFalse(testSubList.payForAcSub(testSub3));
+        assertFalse(testSubList.payForLivSub(testSub1));
+        assertFalse(testSubList.payForAcSub(testSub1));
 
         assertFalse(testSubList.payForEntSub(testSub2));
         assertFalse(testSubList.payForLivSub(testSub2));
@@ -179,6 +185,11 @@ class SubscriptionListTest {
         assertFalse(testSubList.payForEntSub(testSub3));
         assertFalse(testSubList.payForLivSub(testSub3));
         assertFalse(testSubList.payForAcSub(testSub3));
+
+        testSubList.addAcSub(testSub4);
+        assertTrue(testSubList.payForAcSub(testSub4));
+        assertEquals(0, testSub4.getApparentPrice());
+        assertEquals(0.1, testSub4.getPrice());
     }
 
     @Test
