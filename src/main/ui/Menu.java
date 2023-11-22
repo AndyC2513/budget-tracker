@@ -44,6 +44,10 @@ public class Menu extends JFrame implements ActionListener {
     private static final String enterLivPayString = "Pay for Living Expense Subscription Associated";
     private static final String enterAcPayString = "Pay for Academic Expense Subscription Associated";
 
+    private static final String fundEntString = "Add Fund to Entertainment Subscriptions";
+    private static final String fundLivString = "Add Fund to Living Expense Subscriptions";
+    private static final String fundAcString = "Add Fund to Academic Expense Subscriptions";
+
     private static final int WIDTH = 1100;
     private static final int HEIGHT = 800;
 
@@ -60,6 +64,13 @@ public class Menu extends JFrame implements ActionListener {
     private JButton fundButton;
     private JButton saveButton;
     private JButton loadButton;
+
+    private JPanel fundPanel;
+    private JLabel fundLabel;
+    private JTextField fundAmountText;
+    private JButton fundEnt;
+    private JButton fundLiv;
+    private JButton fundAc;
 
     private JPanel payPanel;
     private JLabel payLabel;
@@ -169,9 +180,75 @@ public class Menu extends JFrame implements ActionListener {
         makeRemovePanel();
         makeViewPanel();
         makePayPanel();
+        makeFundPanel();
 
         mainPanel.setVisible(true);
         setResizable(false);
+    }
+
+    public void makeFundPanel() {
+        fundPanel = new JPanel(new GridLayout(6,1));
+        JButton returnButton = new JButton(returnString);
+        returnButton.setActionCommand(returnString);
+        returnButton.addActionListener(this);
+        returnButton.setBackground(Color.WHITE);
+        returnButton.setForeground(Color.BLACK);
+        returnButton.setFont(new Font("Arial", Font.BOLD, 12));
+        fundPanel.add(returnButton);
+        pack();
+        setLocationRelativeTo(null);
+        setVisible(true);
+
+        createFundTexts();
+        addLabelsToFund();
+    }
+
+    public void addLabelsToFund() {
+        fundPanel.add(fundLabel);
+        fundPanel.add(fundAmountText);
+        fundPanel.add(fundEnt);
+        fundPanel.add(fundLiv);
+        fundPanel.add(fundAc);
+    }
+
+    public void createFundTexts() {
+        fundLabel = new JLabel("Enter the Amount of Funds to Apply");
+
+        fundAmountText = new JTextField(10);
+
+        fundEnt = new JButton(fundEntString);
+        fundEnt.setActionCommand(fundEntString);
+        fundEnt.addActionListener(this);
+
+        fundLiv = new JButton(fundLivString);
+        fundLiv.setActionCommand(fundLivString);
+        fundLiv.addActionListener(this);
+
+        fundAc = new JButton(fundAcString);
+        fundAc.setActionCommand(fundAcString);
+        fundAc.addActionListener(this);
+
+        adjustFundSettings();
+    }
+
+    public void adjustFundSettings() {
+        fundLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        fundLabel.setFont(new Font("Arial", Font.BOLD, 24));
+
+        fundAmountText.setMaximumSize(new Dimension(1200, 400));
+        fundAmountText.setHorizontalAlignment(SwingConstants.CENTER);
+
+        fundEnt.setBackground(Color.WHITE);
+        fundEnt.setForeground(Color.BLACK);
+        fundEnt.setFont(new Font("Arial", Font.BOLD, 12));
+
+        fundLiv.setBackground(Color.WHITE);
+        fundLiv.setForeground(Color.BLACK);
+        fundLiv.setFont(new Font("Arial", Font.BOLD, 12));
+
+        fundAc.setBackground(Color.WHITE);
+        fundAc.setForeground(Color.BLACK);
+        fundAc.setFont(new Font("Arial", Font.BOLD, 12));
     }
 
     public void makePayPanel() {
@@ -932,7 +1009,7 @@ public class Menu extends JFrame implements ActionListener {
         } else if (e.getActionCommand().equals(payString)) {
             initPayPanel();
         } else if (e.getActionCommand().equals(fundString)) {
-            System.out.println("E");
+            initFundPanel();
         } else if (e.getActionCommand().equals(saveString)) {
             saveSublist();
         } else if (e.getActionCommand().equals(loadString)) {
@@ -1003,7 +1080,69 @@ public class Menu extends JFrame implements ActionListener {
             payEntSubs.setText(entSubs.getText());
             payLivSubs.setText(livSubs.getText());
             payAcSubs.setText(acSubs.getText());
+        } else if (e.getActionCommand().equals(enterLivPayString)) {
+            subList.payForLivSub(subList.getListOfLivSubs().get(parseInt(payLivText.getText())));
+            updateEntSubs();
+            updateLivSubs();
+            updateAcSubs();
+            payEntSubs.setText(entSubs.getText());
+            payLivSubs.setText(livSubs.getText());
+            payAcSubs.setText(acSubs.getText());
+        } else if (e.getActionCommand().equals(enterAcPayString)) {
+            subList.payForAcSub(subList.getListOfAcSubs().get(parseInt(payAcText.getText())));
+            updateEntSubs();
+            updateLivSubs();
+            updateAcSubs();
+            payEntSubs.setText(entSubs.getText());
+            payLivSubs.setText(livSubs.getText());
+            payAcSubs.setText(acSubs.getText());
+        } else if (e.getActionCommand().equals(fundEntString)) {
+            subList.addEntBudget(Double.parseDouble(fundAmountText.getText()));
+            updateEntSubs();
+            updateLivSubs();
+            updateAcSubs();
+            payEntSubs.setText(entSubs.getText());
+            payLivSubs.setText(livSubs.getText());
+            payAcSubs.setText(acSubs.getText());
+            System.out.println("Fund Applied!");
+            returnToMenu();
+        } else if (e.getActionCommand().equals(fundLivString)) {
+            subList.addLivBudget(Double.parseDouble(fundAmountText.getText()));
+            updateEntSubs();
+            updateLivSubs();
+            updateAcSubs();
+            payEntSubs.setText(entSubs.getText());
+            payLivSubs.setText(livSubs.getText());
+            payAcSubs.setText(acSubs.getText());
+            System.out.println("Fund Applied!");
+            returnToMenu();
+        } else if (e.getActionCommand().equals(fundAcString)) {
+            subList.addAcBudget(Double.parseDouble(fundAmountText.getText()));
+            updateEntSubs();
+            updateLivSubs();
+            updateAcSubs();
+            payEntSubs.setText(entSubs.getText());
+            payLivSubs.setText(livSubs.getText());
+            payAcSubs.setText(acSubs.getText());
+            System.out.println("Fund Applied!");
+            returnToMenu();
         }
+    }
+
+    public void initFundPanel() {
+        add(fundPanel);
+        addPanel.setVisible(false);
+        mainPanel.setVisible(false);
+        removePanel.setVisible(false);
+        removeEntPanel.setVisible(false);
+        removeLivPanel.setVisible(false);
+        removeAcPanel.setVisible(false);
+        viewPanel.setVisible(false);
+        payPanel.setVisible(false);
+        payEntPanel.setVisible(false);
+        payLivPanel.setVisible(false);
+        payAcPanel.setVisible(false);
+        fundPanel.setVisible(true);
     }
 
     public void initPayAcPanel() {
@@ -1019,6 +1158,7 @@ public class Menu extends JFrame implements ActionListener {
         payEntPanel.setVisible(false);
         payLivPanel.setVisible(false);
         payAcPanel.setVisible(true);
+        fundPanel.setVisible(false);
     }
 
     public void initPayLivPanel() {
@@ -1034,6 +1174,7 @@ public class Menu extends JFrame implements ActionListener {
         payEntPanel.setVisible(false);
         payLivPanel.setVisible(true);
         payAcPanel.setVisible(false);
+        fundPanel.setVisible(false);
     }
 
     public void initPayEntPanel() {
@@ -1049,6 +1190,7 @@ public class Menu extends JFrame implements ActionListener {
         payEntPanel.setVisible(true);
         payLivPanel.setVisible(false);
         payAcPanel.setVisible(false);
+        fundPanel.setVisible(false);
     }
 
     public void initPayPanel() {
@@ -1067,6 +1209,7 @@ public class Menu extends JFrame implements ActionListener {
         payEntPanel.setVisible(false);
         payLivPanel.setVisible(false);
         payAcPanel.setVisible(false);
+        fundPanel.setVisible(false);
     }
 
     public void initViewPanel() {
@@ -1085,6 +1228,7 @@ public class Menu extends JFrame implements ActionListener {
         payEntPanel.setVisible(false);
         payLivPanel.setVisible(false);
         payAcPanel.setVisible(false);
+        fundPanel.setVisible(false);
     }
 
     public void initRemoveAcPanel() {
@@ -1100,6 +1244,7 @@ public class Menu extends JFrame implements ActionListener {
         payEntPanel.setVisible(false);
         payLivPanel.setVisible(false);
         payAcPanel.setVisible(false);
+        fundPanel.setVisible(false);
     }
 
     public void initRemoveLivPanel() {
@@ -1115,6 +1260,7 @@ public class Menu extends JFrame implements ActionListener {
         payEntPanel.setVisible(false);
         payLivPanel.setVisible(false);
         payAcPanel.setVisible(false);
+        fundPanel.setVisible(false);
     }
 
     public void initRemoveEntPanel() {
@@ -1130,6 +1276,7 @@ public class Menu extends JFrame implements ActionListener {
         payEntPanel.setVisible(false);
         payLivPanel.setVisible(false);
         payAcPanel.setVisible(false);
+        fundPanel.setVisible(false);
     }
 
     public void initRemovePanel() {
@@ -1145,6 +1292,7 @@ public class Menu extends JFrame implements ActionListener {
         payEntPanel.setVisible(false);
         payLivPanel.setVisible(false);
         payAcPanel.setVisible(false);
+        fundPanel.setVisible(false);
     }
 
     public void initChoosePanel() {
@@ -1161,6 +1309,7 @@ public class Menu extends JFrame implements ActionListener {
         payEntPanel.setVisible(false);
         payLivPanel.setVisible(false);
         payAcPanel.setVisible(false);
+        fundPanel.setVisible(false);
     }
 
     public void returnToMenu() {
@@ -1176,6 +1325,7 @@ public class Menu extends JFrame implements ActionListener {
         payEntPanel.setVisible(false);
         payLivPanel.setVisible(false);
         payAcPanel.setVisible(false);
+        fundPanel.setVisible(false);
     }
 
     public void initAddPanel() {
@@ -1192,6 +1342,7 @@ public class Menu extends JFrame implements ActionListener {
         payEntPanel.setVisible(false);
         payLivPanel.setVisible(false);
         payAcPanel.setVisible(false);
+        fundPanel.setVisible(false);
     }
 
     public void loadSublist() {
