@@ -12,6 +12,7 @@ import java.io.IOException;
 
 import static java.lang.Integer.parseInt;
 
+// GUI for BudgetApp
 public class Menu extends JFrame implements ActionListener {
     private static final String JSON_STORE = "./data/sublist.json";
     private static final String addString = "Add Subscription";
@@ -157,7 +158,7 @@ public class Menu extends JFrame implements ActionListener {
     private JButton livButton;
     private JButton acButton;
 
-    // EFFECTS: Makes a new JFrame
+    // EFFECTS: Makes a new JFrame with all panels, labels, and panels loaded
     public Menu() {
         super("Budget App");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -186,6 +187,7 @@ public class Menu extends JFrame implements ActionListener {
         setResizable(false);
     }
 
+    // EFFECT: makes a new JPanel for funds
     public void makeFundPanel() {
         fundPanel = new JPanel(new GridLayout(6,1));
         JButton returnButton = new JButton(returnString);
@@ -203,6 +205,7 @@ public class Menu extends JFrame implements ActionListener {
         addLabelsToFund();
     }
 
+    // EFFECTS: adds all necessary labels, buttons, and pane to the panel
     public void addLabelsToFund() {
         fundPanel.add(fundLabel);
         fundPanel.add(fundAmountText);
@@ -211,6 +214,7 @@ public class Menu extends JFrame implements ActionListener {
         fundPanel.add(fundAc);
     }
 
+    // EFFECTS: creates the components to be shown on the panel
     public void createFundTexts() {
         fundLabel = new JLabel("Enter the Amount of Funds to Apply");
 
@@ -231,6 +235,7 @@ public class Menu extends JFrame implements ActionListener {
         adjustFundSettings();
     }
 
+    // EFFECTS: adjusts the components' settings
     public void adjustFundSettings() {
         fundLabel.setHorizontalAlignment(SwingConstants.CENTER);
         fundLabel.setFont(new Font("Arial", Font.BOLD, 24));
@@ -251,6 +256,7 @@ public class Menu extends JFrame implements ActionListener {
         fundAc.setFont(new Font("Arial", Font.BOLD, 12));
     }
 
+    // EFFECT: makes a new JPanel for pay
     public void makePayPanel() {
         payPanel = new JPanel(new GridLayout(5,1));
         JButton returnButton = new JButton(returnString);
@@ -271,6 +277,7 @@ public class Menu extends JFrame implements ActionListener {
         makePayAcPanel();
     }
 
+    // EFFECT: makes a new JPanel for academic pay
     public void makePayAcPanel() {
         payAcPanel = new JPanel(new GridLayout(6,1));
         JButton returnButton = new JButton(returnString);
@@ -288,6 +295,7 @@ public class Menu extends JFrame implements ActionListener {
         addLabelstoPayAc();
     }
 
+    // EFFECTS: adds all components to the panel
     public void addLabelstoPayAc() {
         payAcPanel.add(payAcLabel);
         payAcPanel.add(payAcScroll);
@@ -296,6 +304,7 @@ public class Menu extends JFrame implements ActionListener {
         payAcPanel.add(payAcChoice);
     }
 
+    // EFFECTS: creates the necessary components to be shown on the panel
     public void createPayAcTexts() {
         payAcLabel = new JLabel("Living Expense Subscriptions");
 
@@ -316,6 +325,7 @@ public class Menu extends JFrame implements ActionListener {
         adjustPayAcSettings();
     }
 
+    // EFFECTS: adjusts the components' settings
     public void adjustPayAcSettings() {
         payAcLabel.setHorizontalAlignment(SwingConstants.CENTER);
         payAcLabel.setFont(new Font("Arial", Font.BOLD, 24));
@@ -336,6 +346,7 @@ public class Menu extends JFrame implements ActionListener {
         payAcChoice.setFont(new Font("Arial", Font.BOLD, 12));
     }
 
+    // EFFECT: makes a new JPanel for living expense pay
     public void makePayLivPanel() {
         payLivPanel = new JPanel(new GridLayout(6,1));
         JButton returnButton = new JButton(returnString);
@@ -353,6 +364,7 @@ public class Menu extends JFrame implements ActionListener {
         addLabelstoPayLiv();
     }
 
+    // EFFECTS: adds all components to the panel
     public void addLabelstoPayLiv() {
         payLivPanel.add(payLivLabel);
         payLivPanel.add(payLivScroll);
@@ -361,6 +373,7 @@ public class Menu extends JFrame implements ActionListener {
         payLivPanel.add(payLivChoice);
     }
 
+    // EFFECTS: creates the necessary components to be shown on the panel
     public void createPayLivTexts() {
         payLivLabel = new JLabel("Living Expense Subscriptions");
 
@@ -381,6 +394,7 @@ public class Menu extends JFrame implements ActionListener {
         adjustPayLivSettings();
     }
 
+    // EFFECTS: adjusts the components' settings
     public void adjustPayLivSettings() {
         payLivLabel.setHorizontalAlignment(SwingConstants.CENTER);
         payLivLabel.setFont(new Font("Arial", Font.BOLD, 24));
@@ -401,6 +415,7 @@ public class Menu extends JFrame implements ActionListener {
         payLivChoice.setFont(new Font("Arial", Font.BOLD, 12));
     }
 
+    // EFFECT: makes a new JPanel for entertainment pay
     public void makePayEntPanel() {
         payEntPanel = new JPanel(new GridLayout(6,1));
         JButton returnButton = new JButton(returnString);
@@ -418,6 +433,7 @@ public class Menu extends JFrame implements ActionListener {
         addLabelstoPayEnt();
     }
 
+    // EFFECTS: adds all components to the panel
     public void addLabelstoPayEnt() {
         payEntPanel.add(payEntLabel);
         payEntPanel.add(payEntScroll);
@@ -426,6 +442,7 @@ public class Menu extends JFrame implements ActionListener {
         payEntPanel.add(payEntChoice);
     }
 
+    // EFFECTS: creates the necessary components to be shown on the panel
     public void createPayEntTexts() {
         payEntLabel = new JLabel("Entertainment Subscriptions");
 
@@ -446,6 +463,7 @@ public class Menu extends JFrame implements ActionListener {
         adjustPayEntSettings();
     }
 
+    // EFFECTS: adjusts the components' settings
     public void adjustPayEntSettings() {
         payEntLabel.setHorizontalAlignment(SwingConstants.CENTER);
         payEntLabel.setFont(new Font("Arial", Font.BOLD, 24));
@@ -466,6 +484,7 @@ public class Menu extends JFrame implements ActionListener {
         payEntChoice.setFont(new Font("Arial", Font.BOLD, 12));
     }
 
+    // EFFECTS: adds all components to the panel
     public void addLabelstoPay() {
         payPanel.add(payLabel);
         payPanel.add(payEntButton);
@@ -473,6 +492,7 @@ public class Menu extends JFrame implements ActionListener {
         payPanel.add(payAcButton);
     }
 
+    // EFFECTS: creates the necessary components to be shown on the panel
     public void createPayTexts() {
         payLabel = new JLabel("Choose a Category");
 
@@ -491,6 +511,7 @@ public class Menu extends JFrame implements ActionListener {
         adjustPaySettings();
     }
 
+    // EFFECTS: adjusts the components' settings
     public void adjustPaySettings() {
         payLabel.setHorizontalAlignment(SwingConstants.CENTER);
         payLabel.setFont(new Font("Arial", Font.BOLD, 24));
@@ -508,6 +529,7 @@ public class Menu extends JFrame implements ActionListener {
         payAcButton.setFont(new Font("Arial", Font.BOLD, 12));
     }
 
+    // EFFECT: makes a new JPanel for view subscriptions
     public void makeViewPanel() {
         viewPanel = new JPanel(new GridLayout(7,1));
         JButton returnButton = new JButton(returnString);
@@ -525,6 +547,7 @@ public class Menu extends JFrame implements ActionListener {
         addLabelstoView();
     }
 
+    // EFFECTS: adds all components to the panel
     public void addLabelstoView() {
         viewPanel.add(viewEntLabel);
         viewPanel.add(viewEntScroll);
@@ -534,6 +557,7 @@ public class Menu extends JFrame implements ActionListener {
         viewPanel.add(viewAcScroll);
     }
 
+    // EFFECTS: adjusts the components' settings
     public void createViewTexts() {
         viewEntLabel = new JLabel("Entertainment");
 
@@ -559,6 +583,7 @@ public class Menu extends JFrame implements ActionListener {
         adjustViewSettings();
     }
 
+    // EFFECTS: adjusts the components' settings
     public void adjustViewSettings() {
         viewEntLabel.setMaximumSize(new Dimension(1200, 400));
         viewEntLabel.setHorizontalAlignment(SwingConstants.CENTER);
@@ -576,6 +601,7 @@ public class Menu extends JFrame implements ActionListener {
         viewAcSubs.setHorizontalAlignment(SwingConstants.CENTER);
     }
 
+    // EFFECT: makes a new JPanel for view subscriptions
     public void makeRemoveEntPanel() {
         removeEntPanel = new JPanel(new GridLayout(6,1));
         JButton returnButton = new JButton(returnString);
@@ -593,6 +619,7 @@ public class Menu extends JFrame implements ActionListener {
         addLabelstoRemoveEnt();
     }
 
+    // EFFECTS: adds all components to the panel
     public void addLabelstoRemoveEnt() {
         removeEntPanel.add(removeEntLabel);
         removeEntPanel.add(removeEntScroll);
@@ -601,6 +628,7 @@ public class Menu extends JFrame implements ActionListener {
         removeEntPanel.add(removeEntChoice);
     }
 
+    // EFFECTS: creates the necessary components to be shown on the panel
     public void createRemoveEntTexts() {
         removeEntLabel = new JLabel("Entertainment Subscriptions");
 
@@ -618,6 +646,7 @@ public class Menu extends JFrame implements ActionListener {
         adjustRemoveEntSettings();
     }
 
+    // EFFECTS: adjusts the components' settings
     public void adjustRemoveEntSettings() {
         removeEntLabel.setHorizontalAlignment(SwingConstants.CENTER);
         removeEntLabel.setFont(new Font("Arial", Font.BOLD, 24));
@@ -638,6 +667,7 @@ public class Menu extends JFrame implements ActionListener {
         removeEntChoice.setFont(new Font("Arial", Font.BOLD, 12));
     }
 
+    // EFFECT: makes a new JPanel for remove subscriptions
     public void makeRemovePanel() {
         removePanel = new JPanel(new GridLayout(5,1));
         JButton returnButton = new JButton(returnString);
@@ -658,6 +688,7 @@ public class Menu extends JFrame implements ActionListener {
         makeRemoveAcPanel();
     }
 
+    // EFFECT: makes a new JPanel for remove academic subscriptions
     public void makeRemoveAcPanel() {
         removeAcPanel = new JPanel(new GridLayout(6,1));
         JButton returnButton = new JButton(returnString);
@@ -675,6 +706,7 @@ public class Menu extends JFrame implements ActionListener {
         addLabelstoRemoveAc();
     }
 
+    // EFFECTS: adds all components to the panel
     public void addLabelstoRemoveAc() {
         removeAcPanel.add(removeAcLabel);
         removeAcPanel.add(removeAcScroll);
@@ -683,6 +715,7 @@ public class Menu extends JFrame implements ActionListener {
         removeAcPanel.add(removeAcChoice);
     }
 
+    // EFFECTS: creates the necessary components to be shown on the panel
     public void createRemoveAcTexts() {
         removeAcLabel = new JLabel("Living Expense Subscriptions");
 
@@ -700,6 +733,7 @@ public class Menu extends JFrame implements ActionListener {
         adjustRemoveAcSettings();
     }
 
+    // EFFECTS: adjusts the components' settings
     public void adjustRemoveAcSettings() {
         removeAcLabel.setHorizontalAlignment(SwingConstants.CENTER);
         removeAcLabel.setFont(new Font("Arial", Font.BOLD, 24));
@@ -720,6 +754,7 @@ public class Menu extends JFrame implements ActionListener {
         removeAcChoice.setFont(new Font("Arial", Font.BOLD, 12));
     }
 
+    // EFFECT: makes a new JPanel for remove living subscriptions
     public void makeRemoveLivPanel() {
         removeLivPanel = new JPanel(new GridLayout(6,1));
         JButton returnButton = new JButton(returnString);
@@ -737,6 +772,7 @@ public class Menu extends JFrame implements ActionListener {
         addLabelstoRemoveLiv();
     }
 
+    // EFFECTS: adds all components to the panel
     public void addLabelstoRemoveLiv() {
         removeLivPanel.add(removeLivLabel);
         removeLivPanel.add(removeLivScroll);
@@ -745,6 +781,7 @@ public class Menu extends JFrame implements ActionListener {
         removeLivPanel.add(removeLivChoice);
     }
 
+    // EFFECTS: creates the necessary components to be shown on the panel
     public void createRemoveLivTexts() {
         removeLivLabel = new JLabel("Living Expense Subscriptions");
 
@@ -762,6 +799,7 @@ public class Menu extends JFrame implements ActionListener {
         adjustRemoveLivSettings();
     }
 
+    // EFFECTS: adjusts the components' settings
     public void adjustRemoveLivSettings() {
         removeLivLabel.setHorizontalAlignment(SwingConstants.CENTER);
         removeLivLabel.setFont(new Font("Arial", Font.BOLD, 24));
@@ -782,6 +820,7 @@ public class Menu extends JFrame implements ActionListener {
         removeLivChoice.setFont(new Font("Arial", Font.BOLD, 12));
     }
 
+    // EFFECTS: adds all components to the panel
     public void addLabelstoRemove() {
         removePanel.add(categoryLabel);
         removePanel.add(removeEntButton);
@@ -789,6 +828,7 @@ public class Menu extends JFrame implements ActionListener {
         removePanel.add(removeAcButton);
     }
 
+    // EFFECTS: creates the necessary components to be shown on the panel
     public void createRemoveTexts() {
         categoryLabel = new JLabel("Choose a Category to Remove From");
         removeEntButton = new JButton(removeEntString);
@@ -806,6 +846,7 @@ public class Menu extends JFrame implements ActionListener {
         adjustRemoveSettings();
     }
 
+    // EFFECTS: adjusts the components' settings
     public void adjustRemoveSettings() {
         categoryLabel.setFont(new Font("Arial", Font.BOLD, 24));
         categoryLabel.setHorizontalAlignment(SwingConstants.CENTER);
@@ -823,6 +864,7 @@ public class Menu extends JFrame implements ActionListener {
         removeAcButton.setFont(new Font("Arial", Font.BOLD, 12));
     }
 
+    // EFFECT: makes a new JPanel for add choice subscriptions
     public void makeChoosePanel() {
         choosePanel = new JPanel(new GridLayout(5,1));
         JButton returnButton = new JButton(returnString);
@@ -840,6 +882,7 @@ public class Menu extends JFrame implements ActionListener {
         addLabelstoChoose();
     }
 
+    // EFFECTS: adds all components to the panel
     public void addLabelstoChoose() {
         choosePanel.add(chooseLabel);
         choosePanel.add(entButton);
@@ -847,6 +890,7 @@ public class Menu extends JFrame implements ActionListener {
         choosePanel.add(acButton);
     }
 
+    // EFFECTS: creates the necessary components to be shown on the panel
     public void createChooseTexts() {
         entButton = new JButton(addEntString);
         entButton.setActionCommand(addEntString);
@@ -866,6 +910,7 @@ public class Menu extends JFrame implements ActionListener {
         adjustChooseSettings();
     }
 
+    // EFFECTS: adjusts the components' settings
     public void adjustChooseSettings() {
         entButton.setBackground(Color.WHITE);
         entButton.setForeground(Color.BLACK);
@@ -882,6 +927,7 @@ public class Menu extends JFrame implements ActionListener {
         chooseLabel.setFont(new Font("Arial", Font.BOLD, 24));
     }
 
+    // EFFECT: makes a new JPanel for add subscriptions
     public void makeAddPanel() {
         addPanel = new JPanel(new GridLayout(0, 2));
         JButton returnButton = new JButton(returnString);
@@ -901,6 +947,7 @@ public class Menu extends JFrame implements ActionListener {
         makeChoosePanel();
     }
 
+    // EFFECTS: adds all components to the panel
     public void addLabelsToAdd() {
         addPanel.add(confirmButton);
         addPanel.add(name);
@@ -909,6 +956,7 @@ public class Menu extends JFrame implements ActionListener {
         addPanel.add(text2);
     }
 
+    // EFFECTS: creates the necessary components to be shown on the panel
     public void createSubTexts() {
         confirmButton = new JButton(confirmString);
         confirmButton.setActionCommand(confirmString);
@@ -922,6 +970,7 @@ public class Menu extends JFrame implements ActionListener {
         adjustAddSettings();
     }
 
+    // EFFECTS: adjusts the components' settings
     public void adjustAddSettings() {
         confirmButton.setBackground(Color.WHITE);
         confirmButton.setForeground(Color.BLACK);
@@ -936,6 +985,7 @@ public class Menu extends JFrame implements ActionListener {
         text2.setMaximumSize(new Dimension(1200, 400));
     }
 
+    // EFFECTS: makes the buttons on main menu with no actions and listeners
     public void initButtons() {
         addButton = new JButton(addString);
         mainPanel.add(addButton);
@@ -962,6 +1012,7 @@ public class Menu extends JFrame implements ActionListener {
         setLocationRelativeTo(null);
     }
 
+    // EFFECTS: adds action command and listener to each button
     public void initButtonsPurpose() {
         addButton.setActionCommand(addString);
         addButton.addActionListener(this);
@@ -985,6 +1036,7 @@ public class Menu extends JFrame implements ActionListener {
         loadButton.addActionListener(this);
     }
 
+    // EFFECTS: initialize model and persistence
     public void initSublist() {
         subList = new SubscriptionList(0, 0, 0);
         jsonReader = new JsonReader(JSON_STORE);
@@ -997,6 +1049,7 @@ public class Menu extends JFrame implements ActionListener {
         acSubs.setText("No Subscriptions!");
     }
 
+    // EFFECTS: actionListener for every button pressed
     @SuppressWarnings("methodlength")
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -1129,6 +1182,7 @@ public class Menu extends JFrame implements ActionListener {
         }
     }
 
+    // EFFECTS: initializes the fund panel and make it visible to user
     public void initFundPanel() {
         add(fundPanel);
         addPanel.setVisible(false);
@@ -1145,6 +1199,7 @@ public class Menu extends JFrame implements ActionListener {
         fundPanel.setVisible(true);
     }
 
+    // EFFECTS: initializes the academic panel and make it visible to user
     public void initPayAcPanel() {
         add(payAcPanel);
         addPanel.setVisible(false);
@@ -1161,6 +1216,7 @@ public class Menu extends JFrame implements ActionListener {
         fundPanel.setVisible(false);
     }
 
+    // EFFECTS: initializes the pay living expense panel and make it visible to user
     public void initPayLivPanel() {
         add(payLivPanel);
         addPanel.setVisible(false);
@@ -1177,6 +1233,7 @@ public class Menu extends JFrame implements ActionListener {
         fundPanel.setVisible(false);
     }
 
+    // EFFECTS: initializes the pay entertainment panel and make it visible to user
     public void initPayEntPanel() {
         add(payEntPanel);
         addPanel.setVisible(false);
@@ -1193,6 +1250,7 @@ public class Menu extends JFrame implements ActionListener {
         fundPanel.setVisible(false);
     }
 
+    // EFFECTS: initializes the pay panel and make it visible to user
     public void initPayPanel() {
         payEntSubs.setText(entSubs.getText());
         payLivSubs.setText(livSubs.getText());
@@ -1212,6 +1270,7 @@ public class Menu extends JFrame implements ActionListener {
         fundPanel.setVisible(false);
     }
 
+    // EFFECTS: initializes the view panel and make it visible to user
     public void initViewPanel() {
         viewEntSubs.setText(entSubs.getText());
         viewLivSubs.setText(livSubs.getText());
@@ -1231,6 +1290,7 @@ public class Menu extends JFrame implements ActionListener {
         fundPanel.setVisible(false);
     }
 
+    // EFFECTS: initializes the remove academic panel and make it visible to user
     public void initRemoveAcPanel() {
         add(removeAcPanel);
         addPanel.setVisible(false);
@@ -1247,6 +1307,7 @@ public class Menu extends JFrame implements ActionListener {
         fundPanel.setVisible(false);
     }
 
+    // EFFECTS: initializes the remove living expense panel and make it visible to user
     public void initRemoveLivPanel() {
         add(removeLivPanel);
         addPanel.setVisible(false);
@@ -1263,6 +1324,7 @@ public class Menu extends JFrame implements ActionListener {
         fundPanel.setVisible(false);
     }
 
+    // EFFECTS: initializes the remove entertainment panel and make it visible to user
     public void initRemoveEntPanel() {
         add(removeEntPanel);
         addPanel.setVisible(false);
@@ -1279,6 +1341,7 @@ public class Menu extends JFrame implements ActionListener {
         fundPanel.setVisible(false);
     }
 
+    // EFFECTS: initializes the remove panel and make it visible to user
     public void initRemovePanel() {
         add(removePanel);
         addPanel.setVisible(false);
@@ -1295,6 +1358,7 @@ public class Menu extends JFrame implements ActionListener {
         fundPanel.setVisible(false);
     }
 
+    // EFFECTS: initializes the add choice panel and make it visible to user
     public void initChoosePanel() {
         add(choosePanel);
         addPanel.setVisible(false);
@@ -1312,6 +1376,7 @@ public class Menu extends JFrame implements ActionListener {
         fundPanel.setVisible(false);
     }
 
+    // EFFECTS: returns to then main panel and make it visible to user
     public void returnToMenu() {
         choosePanel.setVisible(false);
         mainPanel.setVisible(true);
@@ -1328,6 +1393,7 @@ public class Menu extends JFrame implements ActionListener {
         fundPanel.setVisible(false);
     }
 
+    // EFFECTS: returns to add and make it visible to user
     public void initAddPanel() {
         add(addPanel);
         choosePanel.setVisible(false);
@@ -1345,6 +1411,7 @@ public class Menu extends JFrame implements ActionListener {
         fundPanel.setVisible(false);
     }
 
+    // EFFECTS: load the saved data
     public void loadSublist() {
         try {
             subList = jsonReader.read();
@@ -1357,6 +1424,7 @@ public class Menu extends JFrame implements ActionListener {
         }
     }
 
+    // EFFECTS: updates the academic expense subs label
     public void updateAcSubs() {
         if (subList.getNumAcSubs() == 0) {
             acSubs.setText("No Subscriptions!");
@@ -1374,6 +1442,7 @@ public class Menu extends JFrame implements ActionListener {
         }
     }
 
+    // EFFECTS: updates the living expense expense subs label
     public void updateLivSubs() {
         if (subList.getNumLivSubs() == 0) {
             livSubs.setText("No Subscriptions!");
@@ -1391,6 +1460,7 @@ public class Menu extends JFrame implements ActionListener {
         }
     }
 
+    // EFFECTS: updates the entertainment expense subs label
     public void updateEntSubs() {
         if (subList.getNumEntSubs() == 0) {
             entSubs.setText("No Subscriptions!");
@@ -1408,6 +1478,7 @@ public class Menu extends JFrame implements ActionListener {
         }
     }
 
+    // EFFECTS: saves the current sublist
     public void saveSublist() {
         try {
             jsonWriter.open();
