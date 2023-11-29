@@ -37,13 +37,35 @@ either *pay* or *remove* each subscription or expense. In addition, the user can
 
 - You can add a subscription to subscriptions by clicking on Add Subscriptions and then following the instructions given
 in the program.
-- You can view the list of subscriptions by clicking on the View Subscriptions button
-- You can mark a subscription as *paid* by clicking on the Pay button and selecting the subscription you want to pay for
-and
-- You can remove a subscription from my subscriptions by Remove button and choosing the subscription you want to remove
+- You can view the list of subscriptions by clicking on the View Subscriptions button.
+- You can mark a subscription as *paid* by clicking on the Pay button and following the instructions given by program.
+- You can remove a subscription from my subscriptions by Remove button and choosing the subscription you want to remove.
 - You can see how much fund is available for each Subscription list by clicking on the View Subscriptions button after 
-you've added at least one subscription
-- You can add funds to subscriptions by clicking on the Add Funds button and following the instructions given
-- You can locate my visual component by starting the program and entering main menu
-- You can save the state of my application by clicking on save button
-- You can reload the state of my application by clicking on load save button
+you've added at least one subscription.
+- You can add funds to subscriptions by clicking on the Add Funds button and following the instructions given.
+- You can locate my visual component by starting the program and entering main menu.
+- You can save the state of my application by clicking on save button.
+- You can reload the state of my application by clicking on load save button.
+
+## Phase 4 Part 2
+
+Tue Nov 28 20:21:41 PST 2023\
+Entertainment Subscription Added.
+
+Tue Nov 28 20:21:41 PST 2023\
+Entertainment Subscription Added.
+
+Tue Nov 28 20:21:41 PST 2023\
+Living Expense Subscription Added.
+
+Tue Nov 28 20:21:41 PST 2023\
+Academic Expense Subscription Added.
+
+Tue Nov 28 20:21:46 PST 2023\
+Entertainment Funds added.
+
+Tue Nov 28 20:21:52 PST 2023\
+Entertainment Subscription Paid.
+
+Tue Nov 28 20:21:59 PST 2023\
+Entertainment Subscription Removed.

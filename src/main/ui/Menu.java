@@ -7,6 +7,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
@@ -161,9 +163,33 @@ public class Menu extends JFrame implements ActionListener {
     // EFFECTS: Makes a new JFrame with all panels, labels, and panels loaded
     public Menu() {
         super("Budget App");
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+        addWindowListener(new WindowAdapter() {
+            StringPrinter sp;
+            @Override
+            // EFFECTS: closes application and prints log to console
+            public void windowClosing(WindowEvent e) {
+                sp = new StringPrinter();
+                sp.printLog(EventLog.getInstance());
+                System.exit(0);
+            }
+        });
         setPreferredSize(new Dimension(WIDTH, HEIGHT));
 
+        makeMainMenu();
+
+        makeAddPanel();
+        makeRemovePanel();
+        makeViewPanel();
+        makePayPanel();
+        makeFundPanel();
+
+        mainPanel.setVisible(true);
+        setResizable(false);
+    }
+
+    // EFFECT: Makes the main menu and buttons
+    public void makeMainMenu() {
         mainPanel = new JPanel();
         mainLabel = new JLabel("Choose an Option");
         Icon mainIcon = new ImageIcon("./data/Stonk.jpg");
@@ -176,15 +202,6 @@ public class Menu extends JFrame implements ActionListener {
         initButtonsPurpose();
         mainPanel.add(iconLabel);
         add(mainPanel);
-
-        makeAddPanel();
-        makeRemovePanel();
-        makeViewPanel();
-        makePayPanel();
-        makeFundPanel();
-
-        mainPanel.setVisible(true);
-        setResizable(false);
     }
 
     // EFFECT: makes a new JPanel for funds
@@ -1074,7 +1091,6 @@ public class Menu extends JFrame implements ActionListener {
         } else if (e.getActionCommand().equals(addEntString)) {
             subList.addEntSub(new Subscription(text1.getText(), Double.parseDouble(text2.getText()),
                     Double.parseDouble(text2.getText()), false));
-            System.out.println("Subscription Added!");
             updateEntSubs();
             updateLivSubs();
             updateAcSubs();
@@ -1082,7 +1098,6 @@ public class Menu extends JFrame implements ActionListener {
         } else if (e.getActionCommand().equals(addLivString)) {
             subList.addLivSub(new Subscription(text1.getText(), Double.parseDouble(text2.getText()),
                     Double.parseDouble(text2.getText()), false));
-            System.out.println("Subscription Added!");
             updateEntSubs();
             updateLivSubs();
             updateAcSubs();
@@ -1090,7 +1105,6 @@ public class Menu extends JFrame implements ActionListener {
         } else if (e.getActionCommand().equals(addAcString)) {
             subList.addAcSub(new Subscription(text1.getText(), Double.parseDouble(text2.getText()),
                     Double.parseDouble(text2.getText()), false));
-            System.out.println("Subscription Added!");
             updateEntSubs();
             updateLivSubs();
             updateAcSubs();
@@ -1103,19 +1117,16 @@ public class Menu extends JFrame implements ActionListener {
             initRemoveAcPanel();
         } else if (e.getActionCommand().equals(enterEntString)) {
             subList.removeEntSub(subList.getListOfEntSubs().get(parseInt(removeEntText.getText())));
-            System.out.println("Subscription Removed!");
             updateEntSubs();
             updateLivSubs();
             updateAcSubs();
         } else if (e.getActionCommand().equals(enterLivString)) {
             subList.removeLivSub(subList.getListOfLivSubs().get(parseInt(removeLivText.getText())));
-            System.out.println("Subscription Removed!");
             updateEntSubs();
             updateLivSubs();
             updateAcSubs();
         } else if (e.getActionCommand().equals(enterAcString)) {
             subList.removeAcSub(subList.getListOfAcSubs().get(parseInt(removeAcText.getText())));
-            System.out.println("Subscription Removed!");
             updateEntSubs();
             updateLivSubs();
             updateAcSubs();
@@ -1157,7 +1168,6 @@ public class Menu extends JFrame implements ActionListener {
             payEntSubs.setText(entSubs.getText());
             payLivSubs.setText(livSubs.getText());
             payAcSubs.setText(acSubs.getText());
-            System.out.println("Fund Applied!");
             returnToMenu();
         } else if (e.getActionCommand().equals(fundLivString)) {
             subList.addLivBudget(Double.parseDouble(fundAmountText.getText()));
@@ -1167,7 +1177,6 @@ public class Menu extends JFrame implements ActionListener {
             payEntSubs.setText(entSubs.getText());
             payLivSubs.setText(livSubs.getText());
             payAcSubs.setText(acSubs.getText());
-            System.out.println("Fund Applied!");
             returnToMenu();
         } else if (e.getActionCommand().equals(fundAcString)) {
             subList.addAcBudget(Double.parseDouble(fundAmountText.getText()));
@@ -1177,7 +1186,6 @@ public class Menu extends JFrame implements ActionListener {
             payEntSubs.setText(entSubs.getText());
             payLivSubs.setText(livSubs.getText());
             payAcSubs.setText(acSubs.getText());
-            System.out.println("Fund Applied!");
             returnToMenu();
         }
     }

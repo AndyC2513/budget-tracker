@@ -32,34 +32,40 @@ public class SubscriptionList implements Writable {
     // EFFECTS: adds a Subscription to the entertainment list
     public void addEntSub(Subscription sub) {
         entertainment.add(sub);
+        EventLog.getInstance().logEvent(new Event("Entertainment Subscription Added."));
     }
 
     // MODIFIES: this
     // EFFECTS: adds a Subscription to the living expense list
     public void addLivSub(Subscription sub) {
         living.add(sub);
+        EventLog.getInstance().logEvent(new Event("Living Expense Subscription Added."));
     }
 
     // MODIFIES: this
     // EFFECTS: adds a Subscription to the academic expense list
     public void addAcSub(Subscription sub) {
         academic.add(sub);
+        EventLog.getInstance().logEvent(new Event("Academic Expense Subscription Added."));
     }
 
 
     // EFFECTS: removes subscription from entertainment list
     public void removeEntSub(Subscription sub) {
         entertainment.remove(sub);
+        EventLog.getInstance().logEvent(new Event("Entertainment Subscription Removed."));
     }
 
     // EFFECTS: removes subscription from living expense list
     public void removeLivSub(Subscription sub) {
         living.remove(sub);
+        EventLog.getInstance().logEvent(new Event("Living Expense Subscription Removed."));
     }
 
     // EFFECTS: removes subscription from academic expense list
     public void removeAcSub(Subscription sub) {
         academic.remove(sub);
+        EventLog.getInstance().logEvent(new Event("Academic Expense Subscription Removed."));
     }
 
     // MODIFIES: this
@@ -71,6 +77,7 @@ public class SubscriptionList implements Writable {
                 entBudget = entBudget - sub.getPrice();
                 sub.setPaid();
                 sub.setApparentPrice();
+                EventLog.getInstance().logEvent(new Event("Entertainment Subscription Paid."));
                 return true;
             } else {
                 return false;
@@ -89,6 +96,7 @@ public class SubscriptionList implements Writable {
                 livBudget = livBudget - sub.getPrice();
                 sub.setPaid();
                 sub.setApparentPrice();
+                EventLog.getInstance().logEvent(new Event("Living Expense Subscription Paid."));
                 return true;
             } else {
                 return false;
@@ -107,6 +115,7 @@ public class SubscriptionList implements Writable {
                 acBudget = acBudget - sub.getPrice();
                 sub.setPaid();
                 sub.setApparentPrice();
+                EventLog.getInstance().logEvent(new Event("Academic Expense Subscription Paid."));
                 return true;
             } else {
                 return false;
@@ -120,18 +129,21 @@ public class SubscriptionList implements Writable {
     // EFFECTS: adds more budget to the appropriate list
     public void addEntBudget(double amount) {
         entBudget = entBudget + amount;
+        EventLog.getInstance().logEvent(new Event("Entertainment Funds added."));
     }
 
     // MODIFIES: this
     // EFFECTS: adds more budget to the appropriate list
     public void addLivBudget(double amount) {
         livBudget = livBudget + amount;
+        EventLog.getInstance().logEvent(new Event("Living Funds added."));
     }
 
     // MODIFIES: this
     // EFFECTS: adds more budget to the appropriate list
     public void addAcBudget(double amount) {
         acBudget = acBudget + amount;
+        EventLog.getInstance().logEvent(new Event("Academic Funds added."));
     }
 
     // EFFECTS: returns the size of the appropriate Subscriptions list
