@@ -69,3 +69,17 @@ Entertainment Subscription Paid.
 
 Tue Nov 28 20:21:59 PST 2023\
 Entertainment Subscription Removed.
+
+## Phase 4 Part 3
+
+**If you had more time to work on the project, what refactoring might you use to improve your design?**
+
+If I had more time to work on my project, the first thing I would do is to refactor my JPanels and JButtonListeners. 
+Currently, all the JButtons are handled by a single ActionListener. This makes the single method 200+ lines long! Due to
+my inexperience with the java swing library, I found that this helped me learn how to use the swing library. If I could
+implement this change, I could add more clarity and cohesion to my application. 
+As it stands at this moment, all of my JPanels are in a single class. If given the opportunity, I would create more 
+classes and potentially an abstraction to contain the similar methods that are used throughout the different JPanels. 
+This would significantly reduce the number of lines in my coding as well as add more clarity. Furthermore, making this 
+change would make it much easier to add more panels in the future if I choose to as I could just reuse the methods
+inherited from the abstract class.

@@ -160,12 +160,13 @@ public class Menu extends JFrame implements ActionListener {
     private JButton livButton;
     private JButton acButton;
 
+    private StringPrinter sp;
+
     // EFFECTS: Makes a new JFrame with all panels, labels, and panels loaded
     public Menu() {
         super("Budget App");
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         addWindowListener(new WindowAdapter() {
-            StringPrinter sp;
             @Override
             // EFFECTS: closes application and prints log to console
             public void windowClosing(WindowEvent e) {
