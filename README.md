@@ -33,7 +33,7 @@ either *pay* or *remove* each subscription or expense. In addition, the user can
 - As a user, I want to be able to save my subscriptions and budgets to file (if I choose to)
 - As a user, I want to be able to be able to load my subscriptions and budgets from file (if I choose to)
 
-## Instructions for Grader
+## Instructions for User
 
 - You can add a subscription to subscriptions by clicking on Add Subscriptions and then following the instructions given
 in the program.
